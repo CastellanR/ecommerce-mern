@@ -1,23 +1,25 @@
-import morgan from "morgan";
+import 'reflect-metadata';
+
 import express from "express";
 
-import routes from "./routes/index";
 import config from "./config/env";
-import ("./config/db");
+import Logger from './loaders/logger';
 
-export let app = express();
+export const  app = express();
 
-//DB Connection
+async function startServer() {
+  await require('./loaders').default({ expressApp: app });
 
-//Middlewares
-app.use(morgan("dev")); //Show on terminal API requests
-app.use(express.json());
+  app.listen(config.port, (err: any) => {
+    if(err) {
+      Logger.error(err)
+      process.exit(1);
+    }
+    Logger.info(      
+      `[security][${process.env.NODE_ENV}] Security is running on PORT ${config.port}`
+    );
+    app.emit("appStarted"); // When is ready, emit an event "appStarted" to all listeners registered
+  });
+}
 
-//Routes
-app.use("/api/security", routes);
-
-app.listen(config.port, () => {
-  console.log(
-    `[security][${process.env.NODE_ENV}] Security is running on PORT ${config.port}`
-  );
-});
+startServer();

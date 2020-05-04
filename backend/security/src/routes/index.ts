@@ -1,12 +1,10 @@
-const routes = require("express").Router();
-const cors = require("cors");
+import { Router } from 'express';
+import user from './user';
 
-routes.use(cors({ optionsSuccessStatus: 200 }));
+// Inject dependencies
+export default () => {
+	const app = Router();
+	user(app);
 
-routes.get("/", (req: any, res:any) => {
-  res.status(200).json({ message: "Connected!" });
-});
-
-//API Routes
-
-export default routes;
+	return app
+}

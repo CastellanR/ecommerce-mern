@@ -6,6 +6,7 @@ const local = {
   rabbitUrl: "amqp://localhost",
   grpcAccess: "localhost:6000",
   cryptoKey: process.env.CRYPTO_KEY,
+  apiPrefix: "/api",
   env: env
 };
 
@@ -15,6 +16,7 @@ const test = {
   rabbitUrl: "amqp://localhost",
   grpcAccess: "localhost:6000",
   cryptoKey: process.env.CRYPTO_KEY,
+  apiPrefix: "/api",
   env: env
 };
 
