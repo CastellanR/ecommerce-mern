@@ -1,5 +1,5 @@
 import express from "express";
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
@@ -29,7 +29,13 @@ export default ({ app }: { app: express.Application }) => {
   // Middlewares
   app.use(morgan("dev")); //Show on terminal API requests
 
-  //Helmet
+  /* Helmet set these headers to add security
+    Strict-Transport-Security: enforces secure (HTTP over SSL/TLS) connections to the server
+    X-Frame-Options: provides clickjacking protection
+    X-XSS-Protection: enables the Cross-site scripting (XSS) filter built into most recent web browsers
+    X-Content-Type-Options: prevents browsers from MIME-sniffing a response away from the declared content-type
+    Content-Security-Policy: prevents a wide range of attacks, including Cross-site scripting and other cross-site injections
+  */
   app.use(helmet());
 
   // Middleware that transforms the raw string of req.body into json

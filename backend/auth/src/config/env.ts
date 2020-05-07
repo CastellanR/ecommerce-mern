@@ -2,7 +2,7 @@ const env : string = process.env["NODE_ENV"];
 
 const local = {
   port: 5000,
-  mongoUri: "mongodb://localhost:27017/security-local",
+  mongoUri: "mongodb://localhost:27017/auth-local",
   rabbitUrl: "amqp://localhost",
   grpcAccess: "localhost:6000",
   cryptoKey: process.env.CRYPTO_KEY,
@@ -12,7 +12,7 @@ const local = {
 
 const test = {
   port: 7000,
-  mongoUri: "mongodb://localhost:27017/security-local",
+  mongoUri: "mongodb://localhost:27017/auth-local",
   rabbitUrl: "amqp://localhost",
   grpcAccess: "localhost:6000",
   cryptoKey: process.env.CRYPTO_KEY,

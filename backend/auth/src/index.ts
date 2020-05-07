@@ -16,7 +16,7 @@ async function startServer() {
       process.exit(1);
     }
     Logger.info(      
-      `[security][${process.env.NODE_ENV}] Security is running on PORT ${config.port}`
+      `[auth][${process.env.NODE_ENV}] Auth is running on PORT ${config.port}`
     );
     app.emit("appStarted"); // When is ready, emit an event "appStarted" to all listeners registered
   });
