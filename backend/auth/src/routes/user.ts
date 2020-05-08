@@ -1,17 +1,18 @@
-import { Router, Request, Response } from "express";
-import { Container } from 'typedi';
+import { Router, Request, Response, NextFunction } from "express";
+import { Container } from "typedi";
 
-// import middlewares from '../middlewares';
+import validation from "./validation/validation";
 import UserService from "../services/user/user";
+import { registerSchema } from "./validation/schema";
 
 const route = Router();
 
 export default (app: Router) => {
-  app.use('/users', route);
-  //Register User
+  app.use("/auth", route);
   route.post(
     "/register",
-    /*auth.optional,*/ async (req, res, next) => {
+    validation(registerSchema, "body"),
+    async (req: Request, res: Response, next: NextFunction) => {
       const userDTO = req.body;
 
       const userServiceInstance = Container.get(UserService); // Service locator

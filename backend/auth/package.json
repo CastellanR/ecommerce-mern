@@ -21,6 +21,7 @@
     "@hapi/joi": "^17.1.1",
     "@types/bunyan": "^1.8.6",
     "@types/cors": "^2.8.6",
+    "@types/hapi__joi": "^17.1.0",
     "@types/helmet": "0.0.46",
     "@types/mongoose": "^5.7.12",
     "@types/supertest": "^2.0.8",
