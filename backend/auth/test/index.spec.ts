@@ -5,8 +5,7 @@ import registerTest from "./register";
 
 beforeAll(function (done) {
   app.on("appStarted", function () {
-    // Wait until express app is up. It's listening the event appStarted.
-    done();
+    done(); // Wait until express app is up. It's listening the event appStarted.
   });
 });
 
