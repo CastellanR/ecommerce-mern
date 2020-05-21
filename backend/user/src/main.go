@@ -3,14 +3,14 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/joho/godotenv/autoload"
+
+	config "./config"
+	routes "./routes"
 )
 
-import config "./config"
-import routes "./routes"
-
 func main() {
-
+	// Loading enviroment variables
+	exportConfig := config.LoadEnv()
 	// Creating a connection to the database
 	config.InitDB()
 
@@ -18,6 +18,6 @@ func main() {
 	router := routes.SetupRouter()
 
 	// Start serving the application
-	router.Run(fmt.Sprintf(":%v",config.ExportConfig.Port))
+	router.Run(fmt.Sprintf(":%v",exportConfig.Port))
 	fmt.Println("Runned!")
 }

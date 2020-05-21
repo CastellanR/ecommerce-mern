@@ -12,3 +12,8 @@
 
 * ReactJs
 * Redux
+
+## Docker dependencies
+
+* docker pull mongo
+* docker pull postgres

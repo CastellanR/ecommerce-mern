@@ -3,15 +3,17 @@ package routes
 import (
 	// "../Controllers"
 	"github.com/gin-gonic/gin"
+	config "../config"
 )
 
 //SetupRouter export services routes to main file
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
-	// v1 := router.Group("/v1")
-	router.GET("/hello", func(c *gin.Context) {
-		c.String(200, `{"message":"hello, hello, hello"}`)
-})
+	prefix := router.Group(config.GetEnvConfig().APIPrefix)
+	{
+		prefix.GET("/status", Status)
+	}
+	
 	/*{
 		v1.GET("todo", Controllers.GetTodos)
 		v1.POST("todo", Controllers.CreateATodo)
@@ -20,4 +22,8 @@ func SetupRouter() *gin.Engine {
 		v1.DELETE("todo/:id", Controllers.DeleteATodo)
 	}*/
 	return router
+}
+// Status show microservice health
+func Status(c *gin.Context) {
+	c.Done()
 }
