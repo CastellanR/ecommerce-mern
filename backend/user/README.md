@@ -7,10 +7,11 @@ Provides all the users information to the frontend and others microservices.
 * Go
 * Gin-Gonic
 * PostgreSQL
-* Jest
+* Logrus
 
 ## Dependencies
 
-* go get github.com/gin-gonic/gin
-* go get github.com/jackc/pgx
-* go get github.com/joho/godotenv
+* github.com/gin-gonic/gin
+* github.com/jackc/pgx
+* github.com/joho/godotenv
+* github.com/sirupsen/logrus
