@@ -8,6 +8,7 @@ Provides all the users information to the frontend and others microservices.
 * Gin-Gonic
 * PostgreSQL
 * Logrus
+* gRPC
 
 ## Dependencies
 
@@ -15,3 +16,6 @@ Provides all the users information to the frontend and others microservices.
 * github.com/jackc/pgx
 * github.com/joho/godotenv
 * github.com/sirupsen/logrus
+* google.golang.org/grpc
+* github.com/golang/protobuf/protoc-gen-go
+* yaourt -S protobuf-go

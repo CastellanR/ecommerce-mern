@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	logger "github.com/sirupsen/logrus"
+	"./grpc"
 	config "./config"
 	routes "./routes"
 )
@@ -11,9 +12,12 @@ import (
 func main() {
 	// Loading enviroment variables
 	exportConfig := config.LoadEnv()
+
 	// Creating a connection to the database
 	config.InitDB()
 
+	//Start gRPCServer
+	go grpc.StartGRPCServer()
 	// Routes 
 	router := routes.SetupRouter()
 
