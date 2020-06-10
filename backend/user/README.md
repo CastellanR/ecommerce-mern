@@ -19,3 +19,7 @@ Provides all the users information to the frontend and others microservices.
 * google.golang.org/grpc
 * github.com/golang/protobuf/protoc-gen-go
 * yaourt -S protobuf-go
+
+## Command to generate proto buffers
+
+protoc -I=. --go_out=plugins=grpc:. ./user.proto

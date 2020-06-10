@@ -8,8 +8,8 @@ import (
 
 //Enviroment provides all enviroments vars
 type Enviroment struct {
-  Port int
-  Host, dbUser, dbPassword, dbName,dbPort,rabbitURL, grpcAccess, cryptoKey,APIPrefix, env string
+  Port, GrpcPort int
+  Host, dbUser, dbPassword, dbName,dbPort,rabbitURL,cryptoKey,APIPrefix, env string
 }
 
 var config map[string]Enviroment
@@ -40,7 +40,7 @@ func LoadEnv () Enviroment{
       dbName:  os.Getenv("DB_NAME"),
       dbPort:  os.Getenv("PORT"),
       rabbitURL: "amqp://localhost",
-      grpcAccess: "localhost:6001",
+      GrpcPort: 6001,
       cryptoKey: os.Getenv("CRYPTO_KEY"),
       APIPrefix: "/api",
       env: env,
@@ -53,7 +53,7 @@ func LoadEnv () Enviroment{
       dbName:  os.Getenv("DB_NAME"),
       dbPort:  os.Getenv("PORT"),
       rabbitURL: "amqp://localhost",
-      grpcAccess: "localhost:6001",
+      GrpcPort: 6001,
       cryptoKey: os.Getenv("CRYPTO_KEY"),
       APIPrefix: "/api",
       env: env,
