@@ -4,6 +4,7 @@ import express from "express";
 
 import config from "./config/env";
 import Logger from './loaders/logger';
+import createUser from "./grpc/client/user/user"
 
 export const  app = express();
 
@@ -20,6 +21,8 @@ async function startServer() {
     );
     app.emit("appStarted"); // When is ready, emit an event "appStarted" to all listeners registered
   });
+
+  await createUser()
 }
 
 startServer();

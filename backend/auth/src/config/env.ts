@@ -4,7 +4,7 @@ const local = {
   port: 5000,
   mongoUri: "mongodb://localhost:27017/auth-local",
   rabbitUrl: "amqp://localhost",
-  grpcAccess: "localhost:6000",
+  grpcUser: "localhost:6001",
   cryptoKey: process.env.CRYPTO_KEY,
   apiPrefix: "/api",
   env: env
@@ -14,7 +14,7 @@ const test = {
   port: 7000,
   mongoUri: "mongodb://localhost:27017/auth-local",
   rabbitUrl: "amqp://localhost",
-  grpcAccess: "localhost:6000",
+  grpcUser: "localhost:6001",
   cryptoKey: process.env.CRYPTO_KEY,
   apiPrefix: "/api",
   env: env

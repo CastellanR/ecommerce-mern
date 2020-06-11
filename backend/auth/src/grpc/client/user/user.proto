@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package user;
+
+service User {
+  rpc createUser (CreateUserRequest) returns (CreateUserResponse);
+}
+
+message CreateUserRequest {
+  string token = 1;
+}
+
+message CreateUserResponse {
+  bool status = 1;
+}
