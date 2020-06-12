@@ -1,35 +1,22 @@
-import 'dotenv/config';
-import * as grpc from 'grpc';
+import * as grpc from "grpc";
 
-/*import { protoIndex } from './proto';
-import greeterHandler from './handlers/greeter';
-
-protoIndex();
-
-const port: string | number = process.env.PORT || 50051;
+import { IAuthServer, AuthService } from "../grpc/generated/auth_grpc_pb";
+import { AuthServer } from "../grpc/server/auth/auth";
+import envConfig from "../config/env";
 
 type StartServerType = () => void;
-export const startServer: StartServerType = (): void => {
-    // create a new gRPC server
-    const server: grpc.Server = new grpc.Server();
 
-    // register all the handler here...
-    server.addService(greeterHandler.service, greeterHandler.handler);
+const startServer: StartServerType = (): void => {
+  // create a new gRPC server
+  const server = new grpc.Server();
+  // add every service to grpc server
+  server.addService<IAuthServer>(AuthService, new AuthServer());
 
-    // define the host/port for server
-    server.bindAsync(
-        `0.0.0.0:${ port }`,
-        grpc.ServerCredentials.createInsecure(),
-        (err: Error, port: number) => {
-            if (err != null) {
-                return console.error(err);
-            }
-            console.log(`gRPC listening on ${ port }`);
-        },
-    );
-
-    // start the gRPC server
-    server.start();
+  server.bind(
+    `localhost:${envConfig.grpcPort}`,
+    grpc.ServerCredentials.createInsecure()
+  );
+  server.start();
 };
 
-startServer();*/
+export default startServer;
