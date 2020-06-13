@@ -1,4 +1,4 @@
-# Ecommerce using MERN stack
+# Ecommerce using MERN stack and Golang 
 
 ## Backend technologies
 
@@ -7,6 +7,8 @@
 * MongoDB
 * Mongoose
 * Jest
+* Golang
+* PostgreSQL
 
 ## Frontend technologies
 
