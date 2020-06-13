@@ -3,20 +3,19 @@ package user
 import (
 	// models "../../models"
 	"fmt"
-	"github.com/gin-gonic/gin"
 )
 
 // CreateUser save an user to the database
-func CreateUser(c *gin.Context) {
+func CreateUser() {
 	fmt.Println("holaaa")
 }
 
 // GetUserByID returns the user's info searched by ID
-func GetUserByID(c *gin.Context) {
+func GetUserByID() {
 
 }
 
 // GetListUser returns the user list of the database	
-func GetListUser(c *gin.Context) {
+func GetListUser() {
 
 }

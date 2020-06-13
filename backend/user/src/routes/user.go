@@ -9,8 +9,14 @@ import (
 func userRoutes(router *gin.RouterGroup){
 	prefix := router.Group("/users")
 	{
-		prefix.POST("", user.CreateUser)
-		prefix.GET(":id", user.GetUserByID)
-		prefix.GET("", user.GetListUser)
+		prefix.POST("", func (c *gin.Context) {
+			user.CreateUser()
+		})
+		prefix.GET(":id", func (c *gin.Context) {
+			user.GetUserByID()
+		})
+		prefix.GET("", func (c *gin.Context) {
+			user.GetListUser()
+		})
 	}
 }
