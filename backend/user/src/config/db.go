@@ -1,31 +1,35 @@
 package config
 
 import (
-	"github.com/jackc/pgx"
-	"context"
 	"fmt"
 	"os"
-	"database/sql"
-)
 
-var db *sql.DB
+	"github.com/jmoiron/sqlx"
+	// Postgres driver
+	_ "github.com/lib/pq"
+)
+//DB structure
+type DB struct {
+	*sqlx.DB
+}
 
 // InitDB provides a connection
-func InitDB() {	
+func InitDB() *DB{	
 	exportConfig := GetEnvConfig()
 
-	connectionString := fmt.Sprintf(
-		"postgres://%v:%v@%v:%v/%v",
+	connStr := fmt.Sprintf(
+		"postgres://%v:%v@%v:%v/%v?sslmode=disable",
 		exportConfig.dbUser,
 		exportConfig.dbPassword,
 		exportConfig.Host, 
 		exportConfig.dbPort,
 		exportConfig.dbName)
 
-	conn, err := pgx.Connect(context.Background(), connectionString)
+	db, err := sqlx.Connect("postgres", connStr)
+
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+    fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+	return &DB{db}
 }

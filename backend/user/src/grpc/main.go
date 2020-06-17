@@ -1,17 +1,19 @@
 package grpc
 
 import (
-    "net"
-    "fmt"
-	logger "github.com/sirupsen/logrus"
-    "google.golang.org/grpc"
+	"fmt"
+	"net"
 
-		user "./server/user"
-		config "../config"
+	logger "github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
+
+	config "../config"
+	user "./server/user"
 )
 
+
 // StartGRPCServer run the server
-func StartGRPCServer() {
+func StartGRPCServer(db *config.DB) {
 		grpcPort := config.GetEnvConfig().GrpcPort
     l, err := net.Listen("tcp", fmt.Sprintf(":%d",grpcPort))
     

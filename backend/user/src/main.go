@@ -3,8 +3,9 @@ package main
 
 import (
 	"fmt"
-	"./grpc"
+
 	config "./config"
+	"./grpc"
 	routes "./routes"
 )
 
@@ -13,13 +14,15 @@ func main() {
 	exportConfig := config.LoadEnv()
 
 	// Creating a connection to the database
-	config.InitDB()
+	db := config.InitDB()
 
 	//Start gRPCServer
-	go grpc.StartGRPCServer()
+	go grpc.StartGRPCServer(db)
 	// Routes 
-	router := routes.SetupRouter()
+	router := routes.SetupRouter(db)
 
 	// Start serving the application
 	router.Run(fmt.Sprintf(":%v",exportConfig.Port))
+
+	defer db.Close()
 }

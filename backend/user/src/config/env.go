@@ -1,9 +1,10 @@
 package config
 
 import (
-  "os"
-  "github.com/joho/godotenv"
-  "fmt"
+	"fmt"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 //Enviroment provides all enviroments vars
@@ -32,7 +33,7 @@ func LoadEnv () Enviroment{
   }
 
   config = map[string]Enviroment{
-    "local": Enviroment{
+    "local": {
       Port: 5001,
       Host: os.Getenv("HOST"),
       dbUser:  os.Getenv("DB_USER"),
@@ -45,7 +46,7 @@ func LoadEnv () Enviroment{
       APIPrefix: "/api",
       env: env,
     },
-    "test": Enviroment{
+    "test": {
       Port: 5001,
       Host: os.Getenv("HOST"),
       dbUser:  os.Getenv("DB_USER"),

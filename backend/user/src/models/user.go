@@ -3,8 +3,8 @@ package models
 //User schema
 type User struct {
 	Base
-	FirstName	string	`json:"firstName"`
-	LastName	string	`json:"lastName"`
-	Email	string	`json:"email"`
-	Password	string	`json:"password"`
+	FirstName	string	`db:"firstName" json:"firstName"`
+	LastName	string	`db:"lastName" json:"lastName"`
+	Email	string	`db:"email" json:"email"`
+	Password	string	`db:"password" json:"password"`
 }

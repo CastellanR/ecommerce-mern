@@ -2,12 +2,14 @@ package models
 
 import (
 	"time"
+
+	uuid "github.com/jackc/pgtype/ext/gofrs-uuid"
 )
 
 //Base schema to all models
 type Base struct {
-	ID	string	`sql:"type:uuid;primary_key;default:uuid_generate_v4()" json:"id"`
-	CreatedAt time.Time	`json:"created_at"`
-	UpdatedAt time.Time	`json:"updated_at"`
-	DeletedAt	time.Time	`json:"deleted_at"`
+	ID	uuid.UUID	`db:"id" json:"id"`
+	CreatedAt time.Time	`db:"createdAt" json:"createdAt"`
+	UpdatedAt time.Time	`db:"updatedAt" json:"updatedAt"`
+	DeletedAt	time.Time	`db:"deletedAt" json:"deletedAt"`
 }

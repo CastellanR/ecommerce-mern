@@ -1,0 +1,24 @@
+package: .
+import:
+- package: github.com/gin-gonic/gin
+  version: v1.6.3
+- package: github.com/golang/protobuf
+  version: v1.4.2
+  subpackages:
+  - proto
+- package: github.com/joho/godotenv
+  version: v1.3.0
+- package: github.com/lib/pq
+  version: v1.7.0
+- package: github.com/sirupsen/logrus
+  version: v1.6.0
+- package: google.golang.org/grpc
+  version: v1.31.0-dev
+  subpackages:
+  - codes
+  - status
+- package: google.golang.org/protobuf
+  version: v1.24.0
+  subpackages:
+  - reflect/protoreflect
+  - runtime/protoimpl
