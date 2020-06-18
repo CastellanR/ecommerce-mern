@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
-
+	logger "github.com/sirupsen/logrus"
 	"github.com/joho/godotenv"
 )
 
@@ -29,7 +29,7 @@ func LoadEnv () Enviroment{
   }
 
   if err != nil {
-    fmt.Println("Error loading .env file")
+    logger.Error(fmt.Sprintf("Error loading .env file %v",err)) 
   }
 
   config = map[string]Enviroment{
