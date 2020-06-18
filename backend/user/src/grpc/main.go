@@ -21,7 +21,7 @@ func StartGRPCServer(db *config.DB) {
       logger.Fatal(err)
     }
 
-    userServer := user.GRPCServer{}
+    userServer := user.GRPCServer{DB: db}
     // Create new gRPC server instance
     server := grpc.NewServer()
 

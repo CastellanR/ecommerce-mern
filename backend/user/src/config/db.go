@@ -13,6 +13,12 @@ type DB struct {
 	*sqlx.DB
 }
 
+type inventory struct {
+	id int
+	name string
+	quantity int
+}
+
 // InitDB provides a connection
 func InitDB() *DB{	
 	exportConfig := GetEnvConfig()
