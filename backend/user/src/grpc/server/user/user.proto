@@ -6,6 +6,7 @@ option go_package = ".;user";
 
 service User {
   rpc createUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc getUserByEmail (GetUserByEmailRequest) returns (GetUserByEmailResponse);
 }
 
 message CreateUserRequest {
@@ -17,4 +18,14 @@ message CreateUserRequest {
 
 message CreateUserResponse {
   string id = 1;
+}
+
+message GetUserByEmailRequest {
+  string email = 1;
+}
+
+message GetUserByEmailResponse {
+  int32 id = 1;
+  string email = 2;
+  string password = 3;
 }
