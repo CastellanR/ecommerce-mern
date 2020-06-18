@@ -2,7 +2,6 @@ package user
 
 import (
     "context"
-    "fmt"
     user "../../../services/user"
     "../../../config"
 )
@@ -16,8 +15,7 @@ type GRPCServer struct{
 func (s *GRPCServer) CreateUser(ctx context.Context, req *CreateUserRequest) (*CreateUserResponse, error) {
     dtoUser := user.DTOCreateUser{FirstName: req.FirstName, LastName: req.LastName, Email: req.Email, Password: req.Password}
     id, _ := user.CreateUser(s.DB, dtoUser)
-    fmt.Println(id)
     return &CreateUserResponse{
-        Id: "id",
+        Id: id,
     }, nil
 }
