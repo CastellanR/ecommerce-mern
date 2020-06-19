@@ -19,7 +19,7 @@ func main() {
 	// Creating a connection to the redis cache
 	redisConnection := config.InitCache()	
 
-	dataStruct := config.DatabaseConnection{DB: db, Cache: redisConnection}
+	dataStruct := config.DatabaseConnection{DB: db, Cache: redisConnection, CacheMap: config.CacheMap}
 	
 	//Start gRPCServer
 	go grpc.StartGRPCServer(&dataStruct)

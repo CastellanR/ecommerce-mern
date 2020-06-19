@@ -10,6 +10,7 @@ import(
 type DatabaseConnection struct {
 	DB *DB
 	Cache *Cache
+	CacheMap *CacheDB
 }
 
 //Cache type
@@ -23,7 +24,7 @@ type CacheDB struct {
 }
 
 //CacheMap indicate database number to cache info
-var CacheMap = CacheDB{UserDB: 0}
+var CacheMap = &CacheDB{UserDB: 0}
 
 //InitCache run redis instance
 func InitCache() *Cache{

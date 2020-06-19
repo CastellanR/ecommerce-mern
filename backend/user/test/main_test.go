@@ -24,7 +24,7 @@ func TestMain(m *testing.M) {
 	// Load cache
 	redisConnection := config.InitCache()	
 
-	DataStruct = config.DatabaseConnection{DB: db, Cache: redisConnection}
+	DataStruct = config.DatabaseConnection{DB: db, Cache: redisConnection, CacheMap: config.CacheMap}
 	// Start new server running the router with the database 
 	testServer := httptest.NewServer(routes.SetupRouter(&DataStruct))	 
 	// Start running other test cases

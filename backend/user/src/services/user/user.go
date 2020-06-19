@@ -48,7 +48,7 @@ func GetUserByID() {
 // GetUserByEmail returns the user's info to auth microservice
 func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*DTOGetUserByEmail, error){
 	// Select user cache from redis server 
-	connection.Cache.Do("SELECT", config.CacheMap.UserDB)
+	connection.Cache.Do("SELECT", connection.CacheMap.UserDB)
 	result, _ := redis.String(connection.Cache.Do("GET",userEmail))
 
 	if result != "" {		
