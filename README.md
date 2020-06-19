@@ -9,6 +9,7 @@
 * Jest
 * Golang
 * PostgreSQL
+* Redis
 
 ## Frontend technologies
 
@@ -19,3 +20,4 @@
 
 * docker pull mongo
 * docker pull postgres
+* docker pull redis
