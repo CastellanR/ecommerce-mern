@@ -5,6 +5,7 @@ import (
 	user "../../../services/user"
 	logger "github.com/sirupsen/logrus"
 	"../../../config"
+	"google.golang.org/grpc/status"
 )
 
 // GRPCServer struct
@@ -33,7 +34,7 @@ func (s *GRPCServer) GetUserByEmail(ctx context.Context, req *GetUserByEmailRequ
 
     if err != nil {
 			logger.Error(err)
-			return nil,err
+			return nil,status.Errorf(5,"Not found")
     }
 
     return &GetUserByEmailResponse{

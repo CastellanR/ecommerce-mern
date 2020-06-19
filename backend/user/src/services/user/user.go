@@ -2,10 +2,11 @@ package user
 
 import (
 	"time"
+	"database/sql"
 	"encoding/json"
 	"github.com/gomodule/redigo/redis"
-	// logger "github.com/sirupsen/logrus"
-	// "../../models"
+	logger "github.com/sirupsen/logrus"
+	"errors"
 	"../../config"
 )
 
@@ -54,7 +55,8 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 	if result != "" {		
 		user := DTOGetUserByEmail{}
 		err := json.Unmarshal([]byte(result), &user)
-		if err != nil {		
+		if err != nil {
+			logger.Error("GetUserByEmail - jsonUnMarshal ->", err)
 			return nil, err
 		}
 		return &user, nil
@@ -66,20 +68,26 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 			&dtoUser.ID, 
 			&dtoUser.Email, 
 			&dtoUser.Password)			
-			
-	if err != nil {		
+	
+	if err != nil && err == sql.ErrNoRows {
+		return nil, errors.New("Doesn't exists a user with that email")
+	}
+	if err != nil {
+		logger.Error("GetUserByEmail - GetUser ->", err)
 		return nil, err
 	}
 
 	jsonUser,err := json.Marshal(dtoUser)
 
-	if err != nil {		
+	if err != nil {
+		logger.Error("GetUserByEmail - jsonMarshal ->", err)
 		return nil, err
 	}
 
 	_, err = connection.Cache.Do("SET", userEmail, jsonUser)
 
-	if err != nil {		
+	if err != nil {
+		logger.Error("GetUserByEmail - setRedis ->", err)
 		return nil, err
 	}
 
