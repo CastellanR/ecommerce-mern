@@ -26,6 +26,28 @@ function deserialize_user_CreateUserResponse(buffer_arg) {
   return user_pb.CreateUserResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_user_GetUserByEmailRequest(arg) {
+  if (!(arg instanceof user_pb.GetUserByEmailRequest)) {
+    throw new Error('Expected argument of type user.GetUserByEmailRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_GetUserByEmailRequest(buffer_arg) {
+  return user_pb.GetUserByEmailRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_user_GetUserByEmailResponse(arg) {
+  if (!(arg instanceof user_pb.GetUserByEmailResponse)) {
+    throw new Error('Expected argument of type user.GetUserByEmailResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_GetUserByEmailResponse(buffer_arg) {
+  return user_pb.GetUserByEmailResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 var UserService = exports.UserService = {
   createUser: {
@@ -38,6 +60,17 @@ var UserService = exports.UserService = {
     requestDeserialize: deserialize_user_CreateUserRequest,
     responseSerialize: serialize_user_CreateUserResponse,
     responseDeserialize: deserialize_user_CreateUserResponse,
+  },
+  getUserByEmail: {
+    path: '/user.User/getUserByEmail',
+    requestStream: false,
+    responseStream: false,
+    requestType: user_pb.GetUserByEmailRequest,
+    responseType: user_pb.GetUserByEmailResponse,
+    requestSerialize: serialize_user_GetUserByEmailRequest,
+    requestDeserialize: deserialize_user_GetUserByEmailRequest,
+    responseSerialize: serialize_user_GetUserByEmailResponse,
+    responseDeserialize: deserialize_user_GetUserByEmailResponse,
   },
 };
 

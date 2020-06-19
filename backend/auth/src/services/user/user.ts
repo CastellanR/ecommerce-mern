@@ -1,15 +1,15 @@
-import { IUser, IUserInputDTO } from '../../interfaces/IUser';
+import { IDTOCreateUser } from '../../interfaces/IUser';
+import createUser  from "../../grpc/client/user/user"
+import Logger from "../../loaders/logger";
 
 export default class UserService {
-  async RegisterUser(userInputDTO: IUserInputDTO): Promise<{ user: IUser; token: string }> {
-    const user = {
-      _id: "1",
-      name: "Hola",
-      email: "as@gmail.com",
-      password: "dsads",
-      salt:"2"
+  async RegisterUser(dtoCreateUser: IDTOCreateUser): Promise<{ code: number; message: string }> {    
+    try {
+      const id = await createUser(dtoCreateUser)
+    } catch (error) {
+      Logger.error(error)
+      return {code:400, message: error}
     }
-
-    return {user, token: "mundo"}
+    return {code: 201, message: "Please check your email to activate the account!"}
   };
 }

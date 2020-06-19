@@ -1,12 +1,11 @@
 export interface IUser {
-  _id: string;
+  id: number;
   name: string;
   email: string;
   password: string;
-  salt: string;
 }
 
-export interface IUserInputDTO {
+export interface IDTOCreateUser {
   firstName: string;
   lastName: string;
   email: string;

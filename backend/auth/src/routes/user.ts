@@ -17,7 +17,7 @@ export default (app: Router) => {
 
       const userServiceInstance = Container.get(UserService); // Service locator
 
-      const response = userServiceInstance.RegisterUser(userDTO);
+      const response = await userServiceInstance.RegisterUser(userDTO);
 
       return res.json(response);
     }
