@@ -7,7 +7,7 @@ import (
 )
 
 
-func userRoutes(router *gin.RouterGroup, db *config.DB){
+func userRoutes(router *gin.RouterGroup, connection *config.DatabaseConnection){
 	prefix := router.Group("/users")
 	{
 		prefix.GET(":id", func (c *gin.Context) {

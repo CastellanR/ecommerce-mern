@@ -9,13 +9,13 @@ import (
 
 // GRPCServer struct
 type GRPCServer struct{
-	DB *config.DB
+	DBConnection *config.DatabaseConnection
 }
 
 // CreateUser method
 func (s *GRPCServer) CreateUser(ctx context.Context, req *CreateUserRequest) (*CreateUserResponse, error) {
 	dtoUser := user.DTOCreateUser{FirstName: req.FirstName, LastName: req.LastName, Email: req.Email, Password: req.Password}
-	id, err := user.CreateUser(s.DB, dtoUser)
+	id, err := user.CreateUser(s.DBConnection, dtoUser)
 
 	if err != nil {
 		logger.Error(err)
@@ -29,7 +29,7 @@ func (s *GRPCServer) CreateUser(ctx context.Context, req *CreateUserRequest) (*C
 
 // GetUserByEmail method
 func (s *GRPCServer) GetUserByEmail(ctx context.Context, req *GetUserByEmailRequest) (*GetUserByEmailResponse, error) {
-    dtoUser, err := user.GetUserByEmail(s.DB, req.Email)
+    dtoUser, err := user.GetUserByEmail(s.DBConnection, req.Email)
 
     if err != nil {
 			logger.Error(err)

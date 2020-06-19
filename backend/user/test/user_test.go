@@ -14,7 +14,7 @@ var mockUser = user.DTOCreateUser{
 
 func TestCreateuser(t *testing.T) {
   var id string
-  id, error := user.CreateUser(DB, mockUser)
+  id, error := user.CreateUser(&DataStruct, mockUser)
 
   if error != nil {
     t.Fatalf("Expected no error, got %v", error)
@@ -25,7 +25,7 @@ func TestCreateuser(t *testing.T) {
 }
 
 func TestGetUserByEmail(t *testing.T) {
-  response, error := user.GetUserByEmail(DB, mockUser.Email)
+  response, error := user.GetUserByEmail(&DataStruct, mockUser.Email)
 
   if error != nil {
     t.Fatalf("Expected no error, got %v", error)

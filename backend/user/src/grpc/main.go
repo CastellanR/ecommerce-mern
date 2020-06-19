@@ -13,7 +13,7 @@ import (
 
 
 // StartGRPCServer run the server
-func StartGRPCServer(db *config.DB) {
+func StartGRPCServer(connection *config.DatabaseConnection) {
 		grpcPort := config.GetEnvConfig().GrpcPort
     l, err := net.Listen("tcp", fmt.Sprintf(":%d",grpcPort))
     
@@ -21,7 +21,7 @@ func StartGRPCServer(db *config.DB) {
       logger.Fatal(err)
     }
 
-    userServer := user.GRPCServer{DB: db}
+    userServer := user.GRPCServer{DBConnection: connection}
     // Create new gRPC server instance
     server := grpc.NewServer()
 
@@ -32,6 +32,6 @@ func StartGRPCServer(db *config.DB) {
 
     // Start gRPC server
     if err := server.Serve(l); err != nil {
-    	logger.Fatal(err)
+      logger.Fatal(err)
     }
 }

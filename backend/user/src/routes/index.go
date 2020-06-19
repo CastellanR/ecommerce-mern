@@ -6,12 +6,12 @@ import (
 )
 
 //SetupRouter export services routes to main file
-func SetupRouter(db *config.DB) *gin.Engine {
+func SetupRouter(connection *config.DatabaseConnection) *gin.Engine {
 	router := gin.Default()
 	prefix := router.Group(config.GetEnvConfig().APIPrefix)
 	{
 		prefix.GET("/status", Status)
-		userRoutes(prefix, db)
+		userRoutes(prefix, connection)
 	}
 	return router
 }

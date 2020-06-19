@@ -16,13 +16,19 @@ func main() {
 	// Creating a connection to the database
 	db := config.InitDB()
 
-	//Start gRPCServer
-	go grpc.StartGRPCServer(db)
-	// Routes 
-	router := routes.SetupRouter(db)
+	// Creating a connection to the redis cache
+	redisConnection := config.InitCache()	
 
+	dataStruct := config.DatabaseConnection{DB: db, Cache: redisConnection}
+	
+	//Start gRPCServer
+	go grpc.StartGRPCServer(&dataStruct)
+	// Routes 
+	router := routes.SetupRouter(&dataStruct)
+	
 	// Start serving the application
 	router.Run(fmt.Sprintf(":%v",exportConfig.Port))
-
+	
+	defer redisConnection.Close()
 	defer db.Close()
 }

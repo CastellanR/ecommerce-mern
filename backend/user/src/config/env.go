@@ -10,7 +10,7 @@ import (
 //Enviroment provides all enviroments vars
 type Enviroment struct {
   Port, GrpcPort int
-  Host, dbUser, dbPassword, dbName,dbPort,rabbitURL,cryptoKey,APIPrefix, env string
+  Host, RedisHost,RedisPort, dbUser, dbPassword, dbName,dbPort,rabbitURL,cryptoKey,APIPrefix, env string
 }
 
 var config map[string]Enviroment
@@ -39,7 +39,9 @@ func LoadEnv () Enviroment{
       dbUser:  os.Getenv("DB_USER"),
       dbPassword:  os.Getenv("DB_PASSWORD"),
       dbName:  os.Getenv("DB_NAME"),
-      dbPort:  os.Getenv("PORT"),
+      dbPort:  os.Getenv("DB_PORT"),
+      RedisHost: os.Getenv("REDIS_HOST"),
+      RedisPort: os.Getenv("REDIS_PORT"),
       rabbitURL: "amqp://localhost",
       GrpcPort: 6001,
       cryptoKey: os.Getenv("CRYPTO_KEY"),
@@ -52,7 +54,9 @@ func LoadEnv () Enviroment{
       dbUser:  os.Getenv("DB_USER"),
       dbPassword:  os.Getenv("DB_PASSWORD"),
       dbName:  os.Getenv("DB_NAME"),
-      dbPort:  os.Getenv("PORT"),
+      dbPort:  os.Getenv("DB_PORT"),
+      RedisHost: os.Getenv("REDIS_HOST"),
+      RedisPort: os.Getenv("REDIS_PORT"),
       rabbitURL: "amqp://localhost",
       GrpcPort: 6001,
       cryptoKey: os.Getenv("CRYPTO_KEY"),

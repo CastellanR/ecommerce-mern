@@ -13,19 +13,24 @@ import (
 
 var envConfig config.Enviroment
 var DB *config.DB
+var DataStruct config.DatabaseConnection
 
 func TestMain(m *testing.M) {
 
 	//Load env configuration
 	envConfig = config.LoadEnv()
 	// Load database
-	DB = config.InitDB()
+	db := config.InitDB()
+	// Load cache
+	redisConnection := config.InitCache()	
+
+	DataStruct = config.DatabaseConnection{DB: db, Cache: redisConnection}
 	// Start new server running the router with the database 
-	testServer := httptest.NewServer(routes.SetupRouter(DB))	 
+	testServer := httptest.NewServer(routes.SetupRouter(&DataStruct))	 
 	// Start running other test cases
 	exitVal := m.Run()
 	//Sanitize DB
-	_, err := DB.Exec(`DELETE FROM "user" WHERE email=$1`, mockUser.Email)
+	_, err := DataStruct.DB.Exec(`DELETE FROM "user" WHERE email=$1`, mockUser.Email)
 
 	if err != nil {
     logger.Error(fmt.Sprintf("Expected no error, got %v", err))
