@@ -10,4 +10,6 @@ export const registerSchema = Joi.object().keys({
   firstName: Joi.string().trim().max(15).required(),
   lastName: Joi.string().trim().max(15).required(),
   password: Joi.string().trim().min(8).max(70).required(),
+  deviceName: Joi.string().trim().min(8).max(70).required(),
+  agent: Joi.string().trim().min(8).max(70).required()
 });

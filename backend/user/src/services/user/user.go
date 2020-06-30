@@ -32,7 +32,7 @@ func CreateUser(connection *config.DatabaseConnection, userDTO DTOCreateUser) (s
 	err := connection.DB.QueryRow(
 		`SELECT id FROM "user" WHERE email=$1`,userDTO.Email).Scan(&id)		
 
-	if err != nil {
+	if err != sql.ErrNoRows && err != nil {
 		return "", err
 	}
 
