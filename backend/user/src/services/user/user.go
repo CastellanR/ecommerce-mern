@@ -26,9 +26,21 @@ type DTOGetUserByEmail struct {
 }
 
 // CreateUser save an user to the database
-func CreateUser(connection *config.DatabaseConnection, userDTO DTOCreateUser) (string, error) {		
+func CreateUser(connection *config.DatabaseConnection, userDTO DTOCreateUser) (string, error) {
+
 	var id string
 	err := connection.DB.QueryRow(
+		`SELECT id FROM "user" WHERE email=$1`,userDTO.Email).Scan(&id)		
+
+	if err != nil {
+		return "", err
+	}
+
+	if id != "" {
+		return "", errors.New("User already exists in the database")
+	}	
+
+	err = connection.DB.QueryRow(
 		`INSERT INTO "user" (firstName,lastName, email, password,createdAt) 
 		VALUES($1, $2, $3, $4, $5) RETURNING id`, userDTO.FirstName,
 		userDTO.LastName, 

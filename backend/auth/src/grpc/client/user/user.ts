@@ -28,9 +28,10 @@ const createUser = async ({
     if (err) {
       Logger.error("asda" + err);
       reject(err);
+    } else {
+      id = response.getId();
+      resolve(id)
     }
-    id = response.getId();
-    resolve(id)
   }))
   return id
 };
