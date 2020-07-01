@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"github.com/gomodule/redigo/redis"
 	logger "github.com/sirupsen/logrus"
-	"errors"
+	"../../errors"
 	"../../config"
 )
 
@@ -26,18 +26,19 @@ type DTOGetUserByEmail struct {
 }
 
 // CreateUser save an user to the database
-func CreateUser(connection *config.DatabaseConnection, userDTO DTOCreateUser) (string, error) {
+func CreateUser(connection *config.DatabaseConnection, userDTO DTOCreateUser) (string, *errors.CustomError) {
 
 	var id string
 	err := connection.DB.QueryRow(
 		`SELECT id FROM "user" WHERE email=$1`,userDTO.Email).Scan(&id)		
 
 	if err != sql.ErrNoRows && err != nil {
-		return "", err
+		logger.Error("QueryRow existing user ->", err)
+		return "", errors.New(err.Error(), 500)
 	}
 
 	if id != "" {
-		return "", errors.New("User already exists in the database")
+		return "", errors.New("User already exists in the database", 400)
 	}	
 
 	err = connection.DB.QueryRow(
@@ -49,7 +50,8 @@ func CreateUser(connection *config.DatabaseConnection, userDTO DTOCreateUser) (s
 		time.Now()).Scan(&id)
 
 	if err != nil {
-		return "", err
+		logger.Error("Insert ->",err)
+		return "", errors.New(err.Error(), 500)
 	}
 	return id, nil
 }
@@ -59,7 +61,7 @@ func GetUserByID() {
 
 }
 // GetUserByEmail returns the user's info to auth microservice
-func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*DTOGetUserByEmail, error){
+func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*DTOGetUserByEmail, *errors.CustomError){
 	// Select user cache from redis server 
 	connection.Cache.Do("SELECT", connection.CacheMap.UserDB)
 	result, _ := redis.String(connection.Cache.Do("GET",userEmail))
@@ -69,7 +71,7 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 		err := json.Unmarshal([]byte(result), &user)
 		if err != nil {
 			logger.Error("GetUserByEmail - jsonUnMarshal ->", err)
-			return nil, err
+			return nil, errors.New(err.Error(), 500)
 		}
 		return &user, nil
 	}
@@ -82,25 +84,26 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 			&dtoUser.Password)			
 	
 	if err != nil && err == sql.ErrNoRows {
-		return nil, errors.New("Doesn't exists a user with that email")
+		return nil, errors.New("Doesn't exists a user with that email", 400)
 	}
 	if err != nil {
 		logger.Error("GetUserByEmail - GetUser ->", err)
-		return nil, err
+		return nil, errors.New(err.Error(), 500)
+
 	}
 
 	jsonUser,err := json.Marshal(dtoUser)
 
 	if err != nil {
 		logger.Error("GetUserByEmail - jsonMarshal ->", err)
-		return nil, err
+		return nil, errors.New(err.Error(), 500)
 	}
 
 	_, err = connection.Cache.Do("SET", userEmail, jsonUser)
 
 	if err != nil {
 		logger.Error("GetUserByEmail - setRedis ->", err)
-		return nil, err
+		return nil, errors.New(err.Error(), 500)
 	}
 
 	return dtoUser, nil

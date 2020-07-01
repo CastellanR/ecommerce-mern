@@ -8,8 +8,10 @@ const registerTest = (request: any, app: any) => {
       firstName: "Prueba",
       lastName: "Test",
       password: "contrasena",
+      deviceName: "Dispositivo",
+      agent: "Linux"
     })
-    .expect(200, done));
+    .expect(201, done));
 
     it("Register with email missing", (done) =>
     request(app)
@@ -48,6 +50,30 @@ const registerTest = (request: any, app: any) => {
       firstName: "Prueba",
       lastName: "Test",
       email: "test@gmail.com",
+    })
+    .expect(422, done));
+
+    it("Register with agent missing", (done) =>
+    request(app)
+    .post("/api/auth/register")
+    .send({
+      firstName: "Prueba",
+      lastName: "Test",
+      email: "test@gmail.com",
+      password: "contrasena",
+      agent: "Linux"
+    })
+    .expect(422, done));
+
+    it("Register with deviceName missing", (done) =>
+    request(app)
+    .post("/api/auth/register")
+    .send({
+      firstName: "Prueba",
+      lastName: "Test",
+      email: "test@gmail.com",
+      password: "contrasena",
+      deviceName: "Dispositivo"
     })
     .expect(422, done));
   });

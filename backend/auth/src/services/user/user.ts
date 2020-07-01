@@ -24,8 +24,7 @@ export default class UserService {
     try {
       idUser = await createUser(dtoCreateUser);
     } catch (error) {
-      Logger.error(error);
-      return { code: 400, message: error };
+      return { code: error.code, message: error.message };
     }
 
     let sessionState;
@@ -47,9 +46,8 @@ export default class UserService {
         idSessionState: sessionState._id,
         createdAt: new Date(),
       });
-  
-      await newSession.save()
-      
+
+      await newSession.save();
     } catch (error) {
       //TODO Add deleteUser logic to handle error
       return {

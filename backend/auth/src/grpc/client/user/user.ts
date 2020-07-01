@@ -1,7 +1,7 @@
 import * as grpc from "grpc";
 
-import Logger from "../../../loaders/logger";
 import config from "../../../config/env";
+import { newError } from "../../../errors/error";
 
 import { CreateUserRequest, CreateUserResponse } from "../../generated/user_pb";
 import { UserClient } from "../../generated/user_grpc_pb";
@@ -12,7 +12,7 @@ const createUser = async ({
   firstName,
   lastName,
   email,
-  password
+  password,
 }: IDTOCreateUser): Promise<string> => {
   let client = new UserClient(
     config.grpcUser,
@@ -24,18 +24,21 @@ const createUser = async ({
   request.setFirstname(firstName);
   request.setLastname(lastName);
   request.setEmail(email);
-  request.setPassword(password);  
+  request.setPassword(password);
 
-  await new Promise((resolve, reject) => client.createUser(request, (err: Error, response: CreateUserResponse) => {
-    if (err) {
-      Logger.error("asda" + err);
-      reject(err);
-    } else {
-      id = response.getId();
-      resolve(id)
-    }
-  }))
-  return id
+  return new Promise((resolve, reject) =>
+    client.createUser(
+      request,
+      (err: Error, response: CreateUserResponse) => {
+        if (err) {          
+          reject(newError(err));
+        } else {
+          id = response.getId();
+          resolve(id);
+        }
+      }
+    )
+  );
 };
 
 export default createUser;

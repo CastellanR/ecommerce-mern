@@ -19,8 +19,7 @@ func (s *GRPCServer) CreateUser(ctx context.Context, req *CreateUserRequest) (*C
 	id, err := user.CreateUser(s.DBConnection, dtoUser)
 
 	if err != nil {
-		logger.Error(err)
-		return nil,err
+		return nil, status.Errorf(2,err.Message, err.Code)
 	}
 
 	return &CreateUserResponse{
@@ -34,7 +33,7 @@ func (s *GRPCServer) GetUserByEmail(ctx context.Context, req *GetUserByEmailRequ
 
     if err != nil {
 			logger.Error(err)
-			return nil,status.Errorf(5,"Not found")
+			return nil, status.Errorf(2,err.Message, err.Code)
     }
 
     return &GetUserByEmailResponse{

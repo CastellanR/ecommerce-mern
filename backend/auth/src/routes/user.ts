@@ -19,7 +19,7 @@ export default (app: Router) => {
 
       const response = await userServiceInstance.RegisterUser(userDTO);
 
-      return res.json(response);
+      return res.status(response.code).json(response);
     }
   );
 };
