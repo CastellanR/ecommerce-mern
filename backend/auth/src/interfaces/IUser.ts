@@ -13,3 +13,9 @@ export interface IDTOCreateUser {
   deviceName: string;
   agent: string;
 }
+
+export interface IDTOLoginUser {  
+  email: string;
+  password: string;
+  keepActive: boolean;
+}

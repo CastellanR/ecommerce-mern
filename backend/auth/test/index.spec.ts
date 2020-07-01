@@ -2,6 +2,7 @@ const request = require("supertest");
 
 import { app } from "../src/index";
 import registerTest from "./register";
+import loginTest from "./login";
 
 beforeAll(function (done) {
   app.on("appStarted", function () {
@@ -15,3 +16,4 @@ describe("App status", () => {
 });
 
 registerTest(request, app);
+loginTest(request, app);
