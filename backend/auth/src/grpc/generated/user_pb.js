@@ -614,7 +614,8 @@ proto.user.GetUserByEmailResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     id: jspb.Message.getFieldWithDefault(msg, 1, 0),
     email: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    password: jspb.Message.getFieldWithDefault(msg, 3, "")
+    password: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    isverified: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
   };
 
   if (includeInstance) {
@@ -663,6 +664,10 @@ proto.user.GetUserByEmailResponse.deserializeBinaryFromReader = function(msg, re
       var value = /** @type {string} */ (reader.readString());
       msg.setPassword(value);
       break;
+    case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsverified(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -710,6 +715,13 @@ proto.user.GetUserByEmailResponse.serializeBinaryToWriter = function(message, wr
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getIsverified();
+  if (f) {
+    writer.writeBool(
+      4,
       f
     );
   }
@@ -767,6 +779,24 @@ proto.user.GetUserByEmailResponse.prototype.getPassword = function() {
  */
 proto.user.GetUserByEmailResponse.prototype.setPassword = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional bool isVerified = 4;
+ * @return {boolean}
+ */
+proto.user.GetUserByEmailResponse.prototype.getIsverified = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.user.GetUserByEmailResponse} returns this
+ */
+proto.user.GetUserByEmailResponse.prototype.setIsverified = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 4, value);
 };
 
 

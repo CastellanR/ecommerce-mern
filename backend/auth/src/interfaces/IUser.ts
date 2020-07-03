@@ -18,11 +18,20 @@ export interface IDTOLoginUser {
   id: number;
   email: string;
   password: string;
-  keepActive: boolean;
+  deviceName: string;
+  agent: string;
+  keepSessionActive: boolean;
+}
+
+export interface IDTOLoginResponse {
+  id: string;
+  email: string;
+  token: string;
 }
 
 export interface IGetUserByEmail {
   id: number;
   email: string;
   password: string;
+  isVerified: boolean;
 }

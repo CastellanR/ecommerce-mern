@@ -22,7 +22,7 @@ export const loginSchema = Joi.object().keys({
     .email({ minDomainSegments: 2 })
     .required(),
   password: Joi.string().trim().min(8).max(70).required(),
-  keepActive: Joi.boolean().required(),
+  keepSessionActive: Joi.boolean().required(),
   deviceName: Joi.string().trim().min(2).max(70).required(),
   agent: Joi.string().trim().min(2).max(70).required()
 });

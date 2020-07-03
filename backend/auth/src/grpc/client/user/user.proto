@@ -26,4 +26,5 @@ message GetUserByEmailResponse {
   int32 id = 1;
   string email = 2;
   string password = 3;
+  bool isVerified = 4;
 }

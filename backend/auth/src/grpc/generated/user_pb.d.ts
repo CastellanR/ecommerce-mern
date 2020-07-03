@@ -91,6 +91,9 @@ export class GetUserByEmailResponse extends jspb.Message {
     getPassword(): string;
     setPassword(value: string): GetUserByEmailResponse;
 
+    getIsverified(): boolean;
+    setIsverified(value: boolean): GetUserByEmailResponse;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): GetUserByEmailResponse.AsObject;
@@ -107,5 +110,6 @@ export namespace GetUserByEmailResponse {
         id: number,
         email: string,
         password: string,
+        isverified: boolean,
     }
 }

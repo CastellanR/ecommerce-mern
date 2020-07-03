@@ -7,4 +7,5 @@ type User struct {
 	LastName	string	`db:"lastName" json:"lastName"`
 	Email	string	`db:"email" json:"email"`
 	Password	string	`db:"password" json:"password"`
+	IsVerified bool	`db:"isVerified" json:"isVerified"`
 }

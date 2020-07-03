@@ -47,7 +47,8 @@ _, err := db.Exec(`
 		firstName text NOT NULL,
 		lastName text NOT NULL, 
 		email text NOT NULL, 
-		password text NOT NULL, 
+		password text NOT NULL,
+		isVerified boolean NOT NULL,
 		createdAt timestamp NOT NULL,
 		updatedAt timestamp NULL,
 		deletedAt timestamp NULL

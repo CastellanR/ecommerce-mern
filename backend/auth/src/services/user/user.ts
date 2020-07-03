@@ -1,7 +1,13 @@
-import { IDTOCreateUser, IDTOLoginUser } from "../../interfaces/IUser";
+import jwt from "jsonwebtoken";
+import {
+  IDTOCreateUser,
+  IDTOLoginUser,
+  IDTOLoginResponse,
+} from "../../interfaces/IUser";
 import { createUser } from "../../grpc/client/user/user";
 import Logger from "../../loaders/logger";
 import BCrypt from "../../config/bcrypt";
+import { encrypt } from "../../helpers/crypto";
 
 import Session from "../../models/Session";
 import SessionState from "../../models/SessionState";
@@ -26,36 +32,6 @@ export default class UserService {
     } catch (error) {
       return { code: error.code, message: error.message };
     }
-
-    let sessionState;
-
-    try {
-      sessionState = await SessionState.findOne({
-        name: "Created",
-        deletedAt: null,
-      });
-    } catch (error) {
-      return { code: 400, message: "Session state Created not found!" };
-    }
-
-    try {
-      const newSession = new Session({
-        userId: idUser,
-        deviceName: dtoCreateUser.deviceName,
-        agent: dtoCreateUser.agent,
-        idSessionState: sessionState._id,
-        createdAt: new Date(),
-      });
-
-      await newSession.save();
-    } catch (error) {
-      //TODO Add deleteUser logic to handle error
-      return {
-        code: 500,
-        message: error,
-      };
-    }
-
     //TODO Add rabbitmq logic
 
     return {
@@ -66,63 +42,84 @@ export default class UserService {
 
   async LoginUser(
     dtoLoginUser: IDTOLoginUser
-  ): Promise<{ code: number; message: string }> {
-    console.log(dtoLoginUser)
-    /*const listSession = await Session.find({
-      idUser: dtoLoginUser.id,
-      deletedAt: null,
-    });
-    console.log(listSession)*/
-    // TODO Add role info query to add to token later
+  ): Promise<{ code: number; message: IDTOLoginResponse | string }> {
+    try {
+      const session = await Session.findOne({
+        idUser: dtoLoginUser.id,
+        deviceName: dtoLoginUser.deviceName,
+        agent: dtoLoginUser.agent,
+        deletedAt: null,
+      });
+      console.log("session", session)
+      console.log(dtoLoginUser.id,dtoLoginUser.deviceName,dtoLoginUser.agent)
 
-    /*dtoCreateUser.password = await BCrypt.hashPassword(
-        dtoCreateUser.password
+      const sessionState = await SessionState.findOne({
+        name: "Active",
+        deletedAt: null,
+      });
+
+      if (!sessionState) {
+        return { code: 500, message: "There is no active session" };
+      }
+
+      const response :IDTOLoginResponse = await new Promise((resolve, reject) =>
+        jwt.sign(
+          { idUser: dtoLoginUser.id },
+          "secret",
+          {
+            expiresIn: dtoLoginUser.keepSessionActive === true ? "180d" : "1d",
+          },
+          async (err, token) => {
+            if (err) {
+              Logger.error(err);
+              reject(err);
+            }
+            // TODO Add role info query to add to token later
+
+            const idUserEncrypted = encrypt(dtoLoginUser.id);
+            const user = {
+              id: idUserEncrypted,
+              email: dtoLoginUser.email,
+              token: `Bearer ${token}`,
+            };
+
+            let date = new Date();
+
+            if (session) {
+              await Session.findOneAndUpdate(
+                {
+                  _id: session._id,
+                },
+                {
+                  idSessionState: sessionState._id,
+                  token: token,
+                  updatedAt: date,
+                },
+                {
+                  //@ts-ignore
+                  useFindAndModify: false,
+                }
+              );
+            } else {
+              const newSession = new Session({
+                idUser: dtoLoginUser.id,
+                deviceName: dtoLoginUser.deviceName,
+                agent: dtoLoginUser.agent,
+                idSessionState: sessionState._id,
+                token: token,
+                createdAt: date,
+              });
+
+              await newSession.save();
+            }
+            resolve(user);
+          }
+        )
       );
+      return { code: 200, message: response };
     } catch (error) {
       Logger.error(error);
       return { code: 500, message: error };
     }
-
-    let idUser: String;
-
-    try {
-      idUser = await createUser(dtoCreateUser);
-    } catch (error) {
-      return { code: error.code, message: error.message };
-    }
-
-    let sessionState;
-
-    try {
-      sessionState = await SessionState.findOne({
-        name: "Created",
-        deletedAt: null,
-      });
-    } catch (error) {
-      return { code: 400, message: "Session state Created not found!" };
-    }
-
-    try {
-      const newSession = new Session({
-        userId: idUser,
-        deviceName: dtoCreateUser.deviceName,
-        agent: dtoCreateUser.agent,
-        idSessionState: sessionState._id,
-        createdAt: new Date(),
-      });
-
-      await newSession.save();
-    } catch (error) {
-      //TODO Add deleteUser logic to handle error
-      return {
-        code: 500,
-        message: error,
-      };
-    }*/
-
-    return {
-      code: 200,
-      message: "Please check your email to activate the account!",
-    };
   }
 }

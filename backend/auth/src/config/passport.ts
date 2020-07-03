@@ -21,17 +21,21 @@ const initPassport = (passport: any) => {
           const isMatch = await BCrypt.compare(password, user.password);
 
           if (isMatch) {
+            if (!user.isVerified)   //Check if the user validate its account
+              return done(undefined, false, {
+                message: "Confirm your account to log in into the application",
+              });
             return done(undefined, user);
           }
           return done(undefined, false, {
             message: "Incorrect password.",
           });
         } catch (err) {
-          return done(err);
+          return done(err.message);
         }
       }
     )
   );
-}
+};
 
-export default initPassport
+export default initPassport;

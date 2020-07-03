@@ -23,6 +23,7 @@ type DTOGetUserByEmail struct {
 	ID int32
 	Email string
 	Password string
+	IsVerified bool
 }
 
 // CreateUser save an user to the database
@@ -42,11 +43,12 @@ func CreateUser(connection *config.DatabaseConnection, userDTO DTOCreateUser) (s
 	}	
 
 	err = connection.DB.QueryRow(
-		`INSERT INTO "user" (firstName,lastName, email, password,createdAt) 
-		VALUES($1, $2, $3, $4, $5) RETURNING id`, userDTO.FirstName,
+		`INSERT INTO "user" (firstName,lastName, email, password, isVerified, createdAt) 
+		VALUES($1, $2, $3, $4, $5, $6) RETURNING id`, userDTO.FirstName,
 		userDTO.LastName, 
 		userDTO.Email,
 		userDTO.Password,
+		false,
 		time.Now()).Scan(&id)
 
 	if err != nil {
@@ -78,10 +80,11 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 
 	dtoUser := new(DTOGetUserByEmail)
 	err := connection.DB.QueryRow(
-		`SELECT id, email, password FROM "user" WHERE email=$1`,userEmail).Scan(
+		`SELECT id, email, password, isverified FROM "user" WHERE email=$1`,userEmail).Scan(
 			&dtoUser.ID, 
 			&dtoUser.Email, 
-			&dtoUser.Password)			
+			&dtoUser.Password,
+			&dtoUser.IsVerified)			
 	
 	if err != nil && err == sql.ErrNoRows {
 		return nil, errors.New("Doesn't exists a user with that email", 400)
@@ -91,19 +94,20 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 		return nil, errors.New(err.Error(), 500)
 
 	}
+	if(dtoUser.IsVerified) {
+		jsonUser,err := json.Marshal(dtoUser)
 
-	jsonUser,err := json.Marshal(dtoUser)
+		if err != nil {
+			logger.Error("GetUserByEmail - jsonMarshal ->", err)
+			return nil, errors.New(err.Error(), 500)
+		}
 
-	if err != nil {
-		logger.Error("GetUserByEmail - jsonMarshal ->", err)
-		return nil, errors.New(err.Error(), 500)
-	}
+		_, err = connection.Cache.Do("SET", userEmail, jsonUser)
 
-	_, err = connection.Cache.Do("SET", userEmail, jsonUser)
-
-	if err != nil {
-		logger.Error("GetUserByEmail - setRedis ->", err)
-		return nil, errors.New(err.Error(), 500)
+		if err != nil {
+			logger.Error("GetUserByEmail - setRedis ->", err)
+			return nil, errors.New(err.Error(), 500)
+		}
 	}
 
 	return dtoUser, nil

@@ -30,17 +30,18 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         await passport.authenticate(
-          'local',
+          "local",
           { session: false },
           async (err, passportUser, info) => {
-            if (err) return res.status(500).json(err);
-            if (!passportUser) return res.status(400).json(info);
+            if (err) return res.status(500).json({ code: 500, message: err });
+            if (!passportUser)
+              return res.status(400).json({ code: 400, message: info });
             req.passportUser = passportUser;
             next();
           }
         )(req, res, next);
       } catch (error) {
-        console.log(error);
+        console.log("Error", error);
       }
     },
     async (req: Request, res: Response) => {
@@ -48,10 +49,12 @@ export default (app: Router) => {
       loginDTO.id = req.passportUser.id;
 
       const userServiceInstance = Container.get(UserService); // Service locator
-
-      const response = await userServiceInstance.LoginUser(loginDTO);
-
-      return res.status(response.code).json(response);
+      try {
+        const response = await userServiceInstance.LoginUser(loginDTO);
+        return res.status(response.code).json(response);
+      } catch (error) {
+        return res.status(500).json(error);
+      }
     }
   );
 };

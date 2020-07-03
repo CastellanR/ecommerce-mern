@@ -51,19 +51,20 @@ export const getUserByEmail = async (
     grpc.credentials.createInsecure()
   );
   let request = new GetUserByEmailRequest();
-  let dtoUser: IGetUserByEmail = { id: 0, email: "", password: "" };
+  let dtoUser: IGetUserByEmail = { id: 0, email: "", password: "", isVerified: false };
   request.setEmail(email);
 
   return new Promise((resolve, reject) =>
     client.getUserByEmail(
       request,
-      (err: Error, response: GetUserByEmailResponse) => {
+      (err: any, response: GetUserByEmailResponse) => {
         if (err) {
-          reject(newError(err));
+          reject(newError(err.details));
         } else {
           dtoUser.id = response.getId();
           dtoUser.email = response.getEmail();
           dtoUser.password = response.getPassword();
+          dtoUser.isVerified = response.getIsverified();
           resolve(dtoUser);
         }
       }

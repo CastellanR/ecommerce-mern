@@ -6,7 +6,7 @@ const loginTest = (request: any, app: any) => {
         .send({
           email: "test@gmail.com",
           password: "contrasena",
-          keepActive: true,
+          keepSessionActive: true,
         })
         .expect(200, done)
         .expect((response: any) => {

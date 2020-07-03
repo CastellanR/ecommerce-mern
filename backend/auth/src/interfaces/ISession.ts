@@ -1,7 +1,7 @@
 import {IBase} from "./IBase"
 
 export interface ISession extends IBase {
-  userId: number;
+  idUser: number;
   token: string;
   deviceName: string;
   agent: string;
