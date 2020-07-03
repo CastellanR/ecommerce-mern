@@ -103,7 +103,9 @@ declare namespace e {
     interface IRouterMatcher<T> extends core.IRouterMatcher<T> { }
     interface MediaType extends core.MediaType { }
     interface NextFunction extends core.NextFunction { }
-    interface Request<P extends core.Params = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = core.Query> extends core.Request<P, ResBody, ReqBody, ReqQuery> { }
+    interface Request<P extends core.Params = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = core.Query> extends core.Request<P, ResBody, ReqBody, ReqQuery> {
+      passportUser: any;
+}
     interface RequestHandler<P extends core.Params = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = core.Query> extends core.RequestHandler<P, ResBody, ReqBody, ReqQuery> { }
     interface RequestParamHandler extends core.RequestParamHandler { }
     export interface Response<ResBody = any> extends core.Response<ResBody> { }

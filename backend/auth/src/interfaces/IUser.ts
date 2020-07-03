@@ -14,8 +14,15 @@ export interface IDTOCreateUser {
   agent: string;
 }
 
-export interface IDTOLoginUser {  
+export interface IDTOLoginUser {
+  id: number;
   email: string;
   password: string;
   keepActive: boolean;
+}
+
+export interface IGetUserByEmail {
+  id: number;
+  email: string;
+  password: string;
 }

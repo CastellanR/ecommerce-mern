@@ -1,5 +1,7 @@
 import express from "express";
 import { NextFunction, Request, Response } from "express";
+import expressSession from "express-session";
+import passport from "passport";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
@@ -7,6 +9,7 @@ import helmet from "helmet";
 
 import routes from "../routes";
 import config from "../config/env";
+import passportConfig from "../config/passport";
 
 export default ({ app }: { app: express.Application }) => {
   // Health Check endpoints
@@ -28,6 +31,20 @@ export default ({ app }: { app: express.Application }) => {
 
   // Middlewares
   app.use(morgan("dev")); //Show on terminal API requests
+
+  //Express session
+  app.use(
+    expressSession({
+      secret: "mySecretKey",
+      resave: true,
+      saveUninitialized: true,
+    })
+  );
+
+  //Passport Config
+  passportConfig(passport)
+  app.use(passport.initialize()); // Passport auth middleware
+  app.use(passport.session());
 
   /* Helmet set these headers to add security
     Strict-Transport-Security: enforces secure (HTTP over SSL/TLS) connections to the server

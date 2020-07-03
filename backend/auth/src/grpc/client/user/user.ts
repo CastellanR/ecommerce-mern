@@ -3,12 +3,17 @@ import * as grpc from "grpc";
 import config from "../../../config/env";
 import { newError } from "../../../errors/error";
 
-import { CreateUserRequest, CreateUserResponse } from "../../generated/user_pb";
+import {
+  CreateUserRequest,
+  CreateUserResponse,
+  GetUserByEmailRequest,
+  GetUserByEmailResponse,
+} from "../../generated/user_pb";
 import { UserClient } from "../../generated/user_grpc_pb";
 
-import { IDTOCreateUser } from "../../../interfaces/IUser";
+import { IDTOCreateUser, IGetUserByEmail } from "../../../interfaces/IUser";
 
-const createUser = async ({
+export const createUser = async ({
   firstName,
   lastName,
   email,
@@ -27,18 +32,41 @@ const createUser = async ({
   request.setPassword(password);
 
   return new Promise((resolve, reject) =>
-    client.createUser(
+    client.createUser(request, (err: Error, response: CreateUserResponse) => {
+      if (err) {
+        reject(newError(err));
+      } else {
+        id = response.getId();
+        resolve(id);
+      }
+    })
+  );
+};
+
+export const getUserByEmail = async (
+  email: string
+): Promise<IGetUserByEmail> => {
+  let client = new UserClient(
+    config.grpcUser,
+    grpc.credentials.createInsecure()
+  );
+  let request = new GetUserByEmailRequest();
+  let dtoUser: IGetUserByEmail = { id: 0, email: "", password: "" };
+  request.setEmail(email);
+
+  return new Promise((resolve, reject) =>
+    client.getUserByEmail(
       request,
-      (err: Error, response: CreateUserResponse) => {
-        if (err) {          
+      (err: Error, response: GetUserByEmailResponse) => {
+        if (err) {
           reject(newError(err));
         } else {
-          id = response.getId();
-          resolve(id);
+          dtoUser.id = response.getId();
+          dtoUser.email = response.getEmail();
+          dtoUser.password = response.getPassword();
+          resolve(dtoUser);
         }
       }
     )
   );
 };
-
-export default createUser;

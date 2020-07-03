@@ -1,5 +1,5 @@
 import { IDTOCreateUser, IDTOLoginUser } from "../../interfaces/IUser";
-import createUser from "../../grpc/client/user/user";
+import { createUser } from "../../grpc/client/user/user";
 import Logger from "../../loaders/logger";
 import BCrypt from "../../config/bcrypt";
 
@@ -67,8 +67,14 @@ export default class UserService {
   async LoginUser(
     dtoLoginUser: IDTOLoginUser
   ): Promise<{ code: number; message: string }> {
+    console.log(dtoLoginUser)
+    /*const listSession = await Session.find({
+      idUser: dtoLoginUser.id,
+      deletedAt: null,
+    });
+    console.log(listSession)*/
+    // TODO Add role info query to add to token later
 
-    
     /*dtoCreateUser.password = await BCrypt.hashPassword(
         dtoCreateUser.password
       );
@@ -113,8 +119,6 @@ export default class UserService {
         message: error,
       };
     }*/
-
-    //TODO Add rabbitmq logic
 
     return {
       code: 200,

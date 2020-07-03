@@ -1,9 +1,10 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response, NextFunction, response } from "express";
 import { Container } from "typedi";
+import passport from "passport";
 
 import validation from "./validation/validation";
 import UserService from "../services/user/user";
-import { registerSchema,loginSchema } from "./validation/schema";
+import { registerSchema, loginSchema } from "./validation/schema";
 
 const route = Router();
 
@@ -12,7 +13,7 @@ export default (app: Router) => {
   route.post(
     "/register",
     validation(registerSchema, "body"),
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
       const userDTO = req.body;
 
       const userServiceInstance = Container.get(UserService); // Service locator
@@ -27,7 +28,24 @@ export default (app: Router) => {
     "/login",
     validation(loginSchema, "body"),
     async (req: Request, res: Response, next: NextFunction) => {
-      const loginDTO = req.body;
+      try {
+        await passport.authenticate(
+          'local',
+          { session: false },
+          async (err, passportUser, info) => {
+            if (err) return res.status(500).json(err);
+            if (!passportUser) return res.status(400).json(info);
+            req.passportUser = passportUser;
+            next();
+          }
+        )(req, res, next);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async (req: Request, res: Response) => {
+      let loginDTO = req.body;
+      loginDTO.id = req.passportUser.id;
 
       const userServiceInstance = Container.get(UserService); // Service locator
 
