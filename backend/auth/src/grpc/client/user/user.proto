@@ -5,6 +5,7 @@ package user;
 service User {
   rpc createUser (CreateUserRequest) returns (CreateUserResponse);
   rpc getUserByEmail (GetUserByEmailRequest) returns (GetUserByEmailResponse);
+  rpc deleteUserByCondition (DeleteUserByConditionRequest) returns (DeleteUserByConditionResponse);
 }
 
 message CreateUserRequest {
@@ -27,4 +28,13 @@ message GetUserByEmailResponse {
   string email = 2;
   string password = 3;
   bool isVerified = 4;
+}
+
+message DeleteUserByConditionRequest {
+  string attribute = 1;
+  string value = 2; 
+}
+
+message DeleteUserByConditionResponse {
+  string response = 1;
 }

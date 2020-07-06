@@ -26,6 +26,28 @@ function deserialize_user_CreateUserResponse(buffer_arg) {
   return user_pb.CreateUserResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_user_DeleteUserByConditionRequest(arg) {
+  if (!(arg instanceof user_pb.DeleteUserByConditionRequest)) {
+    throw new Error('Expected argument of type user.DeleteUserByConditionRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_DeleteUserByConditionRequest(buffer_arg) {
+  return user_pb.DeleteUserByConditionRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_user_DeleteUserByConditionResponse(arg) {
+  if (!(arg instanceof user_pb.DeleteUserByConditionResponse)) {
+    throw new Error('Expected argument of type user.DeleteUserByConditionResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_DeleteUserByConditionResponse(buffer_arg) {
+  return user_pb.DeleteUserByConditionResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_user_GetUserByEmailRequest(arg) {
   if (!(arg instanceof user_pb.GetUserByEmailRequest)) {
     throw new Error('Expected argument of type user.GetUserByEmailRequest');
@@ -71,6 +93,17 @@ var UserService = exports.UserService = {
     requestDeserialize: deserialize_user_GetUserByEmailRequest,
     responseSerialize: serialize_user_GetUserByEmailResponse,
     responseDeserialize: deserialize_user_GetUserByEmailResponse,
+  },
+  deleteUserByCondition: {
+    path: '/user.User/deleteUserByCondition',
+    requestStream: false,
+    responseStream: false,
+    requestType: user_pb.DeleteUserByConditionRequest,
+    responseType: user_pb.DeleteUserByConditionResponse,
+    requestSerialize: serialize_user_DeleteUserByConditionRequest,
+    requestDeserialize: deserialize_user_DeleteUserByConditionRequest,
+    responseSerialize: serialize_user_DeleteUserByConditionResponse,
+    responseDeserialize: deserialize_user_DeleteUserByConditionResponse,
   },
 };
 

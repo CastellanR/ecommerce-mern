@@ -113,3 +113,49 @@ export namespace GetUserByEmailResponse {
         isverified: boolean,
     }
 }
+
+export class DeleteUserByConditionRequest extends jspb.Message { 
+    getAttribute(): string;
+    setAttribute(value: string): DeleteUserByConditionRequest;
+
+    getValue(): string;
+    setValue(value: string): DeleteUserByConditionRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): DeleteUserByConditionRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: DeleteUserByConditionRequest): DeleteUserByConditionRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: DeleteUserByConditionRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): DeleteUserByConditionRequest;
+    static deserializeBinaryFromReader(message: DeleteUserByConditionRequest, reader: jspb.BinaryReader): DeleteUserByConditionRequest;
+}
+
+export namespace DeleteUserByConditionRequest {
+    export type AsObject = {
+        attribute: string,
+        value: string,
+    }
+}
+
+export class DeleteUserByConditionResponse extends jspb.Message { 
+    getResponse(): string;
+    setResponse(value: string): DeleteUserByConditionResponse;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): DeleteUserByConditionResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: DeleteUserByConditionResponse): DeleteUserByConditionResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: DeleteUserByConditionResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): DeleteUserByConditionResponse;
+    static deserializeBinaryFromReader(message: DeleteUserByConditionResponse, reader: jspb.BinaryReader): DeleteUserByConditionResponse;
+}
+
+export namespace DeleteUserByConditionResponse {
+    export type AsObject = {
+        response: string,
+    }
+}

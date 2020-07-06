@@ -2,6 +2,7 @@ package user
 
 import (
 	"time"
+	"fmt"
 	"database/sql"
 	"encoding/json"
 	"github.com/gomodule/redigo/redis"
@@ -116,4 +117,22 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 // GetListUser returns the user list of the database	
 func GetListUser() {
 
+}
+
+// DeleteUserByCondition delete an user by email or id
+func DeleteUserByCondition(connection *config.DatabaseConnection, attribute string, value string) (string, *errors.CustomError){
+	// Select user cache from redis server 
+	if(attribute == "" || value == "") {
+		return "", errors.New("Attribute or value is empty", 500)
+	}
+	_, err := connection.DB.Exec(			
+		fmt.Sprintf(`DELETE FROM "user" WHERE %v='%v'`,attribute,value))
+		
+	if err != nil {
+		logger.Error("DeleteUserByCondition - DeleteUser ->", err)
+		return "", errors.New(err.Error(), 500)
+
+	}	
+
+	return fmt.Sprintf("User with %v: %v deleted",attribute,value), nil
 }

@@ -41,3 +41,16 @@ func (s *GRPCServer) GetUserByEmail(ctx context.Context, req *GetUserByEmailRequ
 		IsVerified: dtoUser.IsVerified,
 	}, nil
 }
+
+// DeleteUserByCondition method
+func (s *GRPCServer) DeleteUserByCondition(ctx context.Context, req *DeleteUserByConditionRequest) (*DeleteUserByConditionResponse, error) {
+	response, err := user.DeleteUserByCondition(s.DBConnection, req.Attribute, req.Value)
+
+	if err != nil {
+		return nil, status.Errorf(2,err.Message, err.Code)
+	}
+
+	return &DeleteUserByConditionResponse{
+		Response: response,
+	}, nil
+}

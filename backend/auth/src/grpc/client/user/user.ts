@@ -7,11 +7,14 @@ import {
   CreateUserRequest,
   CreateUserResponse,
   GetUserByEmailRequest,
-  GetUserByEmailResponse,
+  GetUserByEmailResponse,  
+  DeleteUserByConditionRequest,
+  DeleteUserByConditionResponse
 } from "../../generated/user_pb";
+
 import { UserClient } from "../../generated/user_grpc_pb";
 
-import { IDTOCreateUser, IGetUserByEmail } from "../../../interfaces/IUser";
+import { IDTOCreateUser, IGetUserByEmail, IDeleteUserByCondition } from "../../../interfaces/IUser";
 
 export const createUser = async ({
   firstName,
@@ -66,6 +69,31 @@ export const getUserByEmail = async (
           dtoUser.password = response.getPassword();
           dtoUser.isVerified = response.getIsverified();
           resolve(dtoUser);
+        }
+      }
+    )
+  );
+};
+
+export const deleteUserByAttribute = async (    //By email or id
+  condition: IDeleteUserByCondition
+): Promise<string> => {
+  let client = new UserClient(
+    config.grpcUser,
+    grpc.credentials.createInsecure()
+  );
+  let request = new DeleteUserByConditionRequest();
+  request.setAttribute(condition.attribute);
+  request.setValue(condition.value)
+
+  return new Promise((resolve, reject) =>
+    client.deleteUserByCondition(
+      request,
+      (err: any, response: DeleteUserByConditionResponse) => {
+        if (err) {
+          reject(newError(err.details));
+        } else {
+          resolve(response.getResponse());
         }
       }
     )

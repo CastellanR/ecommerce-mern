@@ -35,3 +35,8 @@ export interface IGetUserByEmail {
   password: string;
   isVerified: boolean;
 }
+
+export interface IDeleteUserByCondition {
+  attribute: string;
+  value: string;
+}
