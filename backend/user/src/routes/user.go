@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//TODO Add activateUser endpoint
 
 func userRoutes(router *gin.RouterGroup, connection *config.DatabaseConnection){
 	prefix := router.Group("/users")

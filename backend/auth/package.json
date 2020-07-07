@@ -10,7 +10,7 @@
   "scripts": {
     "start": "cross-env CRYPTO_KEY=.1qaz2wsx3edc4rfv NODE_ENV=local npm run serve",
     "serve": "tsc && nodemon",
-    "test": "NODE_ENV=test jest",
+    "test": "cross-env CRYPTO_KEY=.1qaz2wsx3edc4rfv NODE_ENV=test jest",
     "watch-test": "npm run test -- --watchAll",
     "build-ts": "tsc",
     "watch-ts": "tsc -w"

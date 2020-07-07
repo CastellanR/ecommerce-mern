@@ -4,6 +4,28 @@
 var grpc = require('grpc');
 var user_pb = require('./user_pb.js');
 
+function serialize_user_ActivateUserRequest(arg) {
+  if (!(arg instanceof user_pb.ActivateUserRequest)) {
+    throw new Error('Expected argument of type user.ActivateUserRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_ActivateUserRequest(buffer_arg) {
+  return user_pb.ActivateUserRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_user_ActivateUserResponse(arg) {
+  if (!(arg instanceof user_pb.ActivateUserResponse)) {
+    throw new Error('Expected argument of type user.ActivateUserResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_ActivateUserResponse(buffer_arg) {
+  return user_pb.ActivateUserResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_user_CreateUserRequest(arg) {
   if (!(arg instanceof user_pb.CreateUserRequest)) {
     throw new Error('Expected argument of type user.CreateUserRequest');
@@ -93,6 +115,17 @@ var UserService = exports.UserService = {
     requestDeserialize: deserialize_user_GetUserByEmailRequest,
     responseSerialize: serialize_user_GetUserByEmailResponse,
     responseDeserialize: deserialize_user_GetUserByEmailResponse,
+  },
+  activateUser: {
+    path: '/user.User/activateUser',
+    requestStream: false,
+    responseStream: false,
+    requestType: user_pb.ActivateUserRequest,
+    responseType: user_pb.ActivateUserResponse,
+    requestSerialize: serialize_user_ActivateUserRequest,
+    requestDeserialize: deserialize_user_ActivateUserRequest,
+    responseSerialize: serialize_user_ActivateUserResponse,
+    responseDeserialize: deserialize_user_ActivateUserResponse,
   },
   deleteUserByCondition: {
     path: '/user.User/deleteUserByCondition',

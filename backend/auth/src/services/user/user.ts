@@ -50,8 +50,6 @@ export default class UserService {
         agent: dtoLoginUser.agent,
         deletedAt: null,
       });
-      console.log("session", session)
-      console.log(dtoLoginUser.id,dtoLoginUser.deviceName,dtoLoginUser.agent)
 
       const sessionState = await SessionState.findOne({
         name: "Active",

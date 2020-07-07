@@ -114,17 +114,27 @@ func GetUserByEmail(connection *config.DatabaseConnection, userEmail string) (*D
 	return dtoUser, nil
 }
 
-// GetListUser returns the user list of the database	
+// GetListUser returns the user list of the database
 func GetListUser() {
 
 }
 
+// ActivateUser delete an user by email or id
+func ActivateUser(connection *config.DatabaseConnection, idUser int32) (string, *errors.CustomError){
+	_, err := connection.DB.Exec(			
+		fmt.Sprintf(`UPDATE "user" SET isverified = %v WHERE id='%v'`,true,idUser))
+		
+	if err != nil {
+		logger.Error("ActivateUser - DeleteUser ->", err)
+		return "", errors.New(err.Error(), 500)
+
+	}	
+
+	return fmt.Sprintf("User with id: %v activated",idUser), nil
+}
+
 // DeleteUserByCondition delete an user by email or id
 func DeleteUserByCondition(connection *config.DatabaseConnection, attribute string, value string) (string, *errors.CustomError){
-	// Select user cache from redis server 
-	if(attribute == "" || value == "") {
-		return "", errors.New("Attribute or value is empty", 500)
-	}
 	_, err := connection.DB.Exec(			
 		fmt.Sprintf(`DELETE FROM "user" WHERE %v='%v'`,attribute,value))
 		

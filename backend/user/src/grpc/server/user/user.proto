@@ -7,6 +7,7 @@ option go_package = ".;user";
 service User {
   rpc createUser (CreateUserRequest) returns (CreateUserResponse);
   rpc getUserByEmail (GetUserByEmailRequest) returns (GetUserByEmailResponse);
+  rpc activateUser (ActivateUserRequest) returns (ActivateUserResponse);
   rpc deleteUserByCondition (DeleteUserByConditionRequest) returns (DeleteUserByConditionResponse);
 }
 
@@ -38,5 +39,13 @@ message DeleteUserByConditionRequest {
 }
 
 message DeleteUserByConditionResponse {
+  string response = 1;
+}
+
+message ActivateUserRequest {
+  int32 idUser = 1;
+}
+
+message ActivateUserResponse {
   string response = 1;
 }

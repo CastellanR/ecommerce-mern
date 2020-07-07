@@ -1,7 +1,9 @@
 const request = require("supertest");
 
 import { app } from "../src/index";
-import {registerTest, mockData} from "./register";
+import { deleteUserByAttribute } from "../src/grpc/client/user/user";
+
+import { registerTest, mockData } from "./register";
 import loginTest from "./login";
 
 beforeAll((done) => {
@@ -15,12 +17,10 @@ describe("App status", () => {
     request(app).get("/status").expect(200, done));
 });
 
-afterAll((done) => {
-  app.on("appStarted", () => {
-
-    done();
-  });
-})
+afterAll(async (done) => {
+  await deleteUserByAttribute({ attribute: "email", value: mockData.email });
+  done();
+});
 
 registerTest(request, app);
 loginTest(request, app);

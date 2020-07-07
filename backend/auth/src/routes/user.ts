@@ -5,6 +5,7 @@ import passport from "passport";
 import validation from "./validation/validation";
 import UserService from "../services/user/user";
 import { registerSchema, loginSchema } from "./validation/schema";
+import Logger from "../loaders/logger";
 
 const route = Router();
 
@@ -33,15 +34,20 @@ export default (app: Router) => {
           "local",
           { session: false },
           async (err, passportUser, info) => {
-            if (err) return res.status(500).json({ code: 500, message: err });
-            if (!passportUser)
+            if (err) {
+              Logger.error(err);
+              return res.status(500).json({ code: 500, message: err });
+            }
+            if (!passportUser) {
+              Logger.error(info);
               return res.status(400).json({ code: 400, message: info });
+            }
             req.passportUser = passportUser;
             next();
           }
         )(req, res, next);
       } catch (error) {
-        console.log("Error", error);
+        Logger.error(error);
       }
     },
     async (req: Request, res: Response) => {

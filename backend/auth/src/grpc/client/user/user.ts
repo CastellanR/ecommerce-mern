@@ -4,17 +4,23 @@ import config from "../../../config/env";
 import { newError } from "../../../errors/error";
 
 import {
+  ActivateUserRequest,
+  ActivateUserResponse,
   CreateUserRequest,
   CreateUserResponse,
   GetUserByEmailRequest,
-  GetUserByEmailResponse,  
+  GetUserByEmailResponse,
   DeleteUserByConditionRequest,
-  DeleteUserByConditionResponse
+  DeleteUserByConditionResponse,
 } from "../../generated/user_pb";
 
 import { UserClient } from "../../generated/user_grpc_pb";
 
-import { IDTOCreateUser, IGetUserByEmail, IDeleteUserByCondition } from "../../../interfaces/IUser";
+import {
+  IDTOCreateUser,
+  IGetUserByEmail,
+  IDeleteUserByCondition,
+} from "../../../interfaces/IUser";
 
 export const createUser = async ({
   firstName,
@@ -54,7 +60,12 @@ export const getUserByEmail = async (
     grpc.credentials.createInsecure()
   );
   let request = new GetUserByEmailRequest();
-  let dtoUser: IGetUserByEmail = { id: 0, email: "", password: "", isVerified: false };
+  let dtoUser: IGetUserByEmail = {
+    id: 0,
+    email: "",
+    password: "",
+    isVerified: false,
+  };
   request.setEmail(email);
 
   return new Promise((resolve, reject) =>
@@ -75,7 +86,27 @@ export const getUserByEmail = async (
   );
 };
 
-export const deleteUserByAttribute = async (    //By email or id
+export const activateUser = async (idUser: number): Promise<string> => {
+  let client = new UserClient(
+    config.grpcUser,
+    grpc.credentials.createInsecure()
+  );
+  let request = new ActivateUserRequest();
+  request.setIduser(idUser);
+
+  return new Promise((resolve, reject) =>
+    client.activateUser(request, (err: any, response: ActivateUserResponse) => {
+      if (err) {
+        reject(newError(err.details));
+      } else {
+        resolve(response.getResponse());
+      }
+    })
+  );
+};
+
+export const deleteUserByAttribute = async (
+  //By email or id
   condition: IDeleteUserByCondition
 ): Promise<string> => {
   let client = new UserClient(
@@ -84,7 +115,7 @@ export const deleteUserByAttribute = async (    //By email or id
   );
   let request = new DeleteUserByConditionRequest();
   request.setAttribute(condition.attribute);
-  request.setValue(condition.value)
+  request.setValue(condition.value);
 
   return new Promise((resolve, reject) =>
     client.deleteUserByCondition(

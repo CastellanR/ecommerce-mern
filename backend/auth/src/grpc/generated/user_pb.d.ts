@@ -159,3 +159,45 @@ export namespace DeleteUserByConditionResponse {
         response: string,
     }
 }
+
+export class ActivateUserRequest extends jspb.Message { 
+    getIduser(): number;
+    setIduser(value: number): ActivateUserRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ActivateUserRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: ActivateUserRequest): ActivateUserRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ActivateUserRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ActivateUserRequest;
+    static deserializeBinaryFromReader(message: ActivateUserRequest, reader: jspb.BinaryReader): ActivateUserRequest;
+}
+
+export namespace ActivateUserRequest {
+    export type AsObject = {
+        iduser: number,
+    }
+}
+
+export class ActivateUserResponse extends jspb.Message { 
+    getResponse(): string;
+    setResponse(value: string): ActivateUserResponse;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ActivateUserResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: ActivateUserResponse): ActivateUserResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ActivateUserResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ActivateUserResponse;
+    static deserializeBinaryFromReader(message: ActivateUserResponse, reader: jspb.BinaryReader): ActivateUserResponse;
+}
+
+export namespace ActivateUserResponse {
+    export type AsObject = {
+        response: string,
+    }
+}
