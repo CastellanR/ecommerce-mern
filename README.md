@@ -1,4 +1,4 @@
-# Ecommerce using MERN stack and Golang 
+# Ecommerce based on microservices architecture with Golang and Typescript as main languages
 
 ## Backend technologies
 
@@ -10,6 +10,7 @@
 * Golang
 * PostgreSQL
 * Redis
+* Swagger
 
 ## Frontend technologies
 

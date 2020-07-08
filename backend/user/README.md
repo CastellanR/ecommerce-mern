@@ -45,13 +45,10 @@ Both files must have this structure
 * HOST
 * PORT
 
-## Run the server
+## Run scripts
 
-go run main.go -- local (in src folder)
-
-## Run testing
-
-go test -- test (in test folder)
+* Server: go run main.go -- local (in src folder)
+* Test suite: go test -- test (in test folder)
 
 ## Command to generate proto buffers
 
