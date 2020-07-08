@@ -1,4 +1,5 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express"
 import { NextFunction, Request, Response } from "express";
 import expressSession from "express-session";
 import passport from "passport";
@@ -10,6 +11,7 @@ import helmet from "helmet";
 import routes from "../routes";
 import config from "../config/env";
 import passportConfig from "../config/passport";
+import * as swaggerDocument from "../../swagger.json"
 
 export default ({ app }: { app: express.Application }) => {
   // Health Check endpoints
@@ -60,6 +62,9 @@ export default ({ app }: { app: express.Application }) => {
 
   // Load API routes
   app.use(config.apiPrefix, routes());
+
+  // Swagger
+  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   // Catch 404 and forward to error handler
   app.use((req, res, next) => {

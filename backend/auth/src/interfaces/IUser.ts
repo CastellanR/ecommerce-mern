@@ -10,8 +10,6 @@ export interface IDTOCreateUser {
   lastName: string;
   email: string;
   password: string;
-  deviceName: string;
-  agent: string;
 }
 
 export interface IDTOLoginUser {
