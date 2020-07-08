@@ -12,6 +12,8 @@
 * Redis
 * Swagger
 
+[List of backend microservices](https://github.com/CastellanR/ecommerce-mern/tree/master/backend)
+
 ## Frontend technologies
 
 * ReactJs
