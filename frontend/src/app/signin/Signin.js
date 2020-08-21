@@ -4,63 +4,62 @@ import { IconContext } from "react-icons";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
-import { Button, FormInput } from "./style";
+import {
+  Wrapper,
+  Form,
+  Button,
+  FormInput,
+  MediaButtonGroup,
+  MediaButton,
+} from "./style";
 
 const Signin = () => {
   const { register, handleSubmit, watch, errors } = useForm();
-  
+
   return (
-    <div class="wrapper">
+    <Wrapper>
       <div className="home">
         <a href="/">Home</a>
       </div>
       <h2>
         Sign in or <a href="#">Create your account</a>
       </h2>
-      <form /*onSubmit={this.handleSubmit}*/>
-        <label>
-          Email:
-          <FormInput type="text" name="email" placeholder="Enter your email" />
-        </label>
-        <label>
-          Password:
-          <FormInput
-            type="text"
-            name="password"
-            placeholder="Enter your password"
-          />
-        </label>
-        <label>
-          Keep session active:
-          <FormInput type="checkbox" name="keepSessionActive" />
-        </label>
+      <Form /*onSubmit={this.handleSubmit}*/>
+        <FormInput type="text" name="email" placeholder="Enter your email" />
+        <FormInput
+          type="text"
+          name="password"
+          placeholder="Enter your password"
+        />
         <div className="submit">
-          <Button type="submit" value="Submit" />
+          <Button type="submit" value="Submit">
+            Submit
+          </Button>
         </div>
-      </form>
+      </Form>
       <p class="separator">
         <span>Or</span>
       </p>
-      <div className="mediaButtons">
-        <div class="google">
-          <IconContext.Provider value={{ className: "googleIcon" }}>
+      <MediaButtonGroup>
+        <MediaButton>
+          <IconContext.Provider value={{ className: "icon" }}>
             <FcGoogle />
           </IconContext.Provider>
-          <a href="#" class="link">
-            Continue with Google
-          </a>
-        </div>
-        <div class="facebook">
-          <IconContext.Provider value={{ className: "faceIcon" }}>
+          <a href="http://www.stackoverflow.com/">Continue with Google</a>
+        </MediaButton>
+        <MediaButton facebook>
+          <IconContext.Provider value={{ className: "icon" }}>
             <FaFacebook />
           </IconContext.Provider>
-          <a href="#" class="link">
-            Continue with Facebook
-          </a>
-        </div>
-        <Button>Probando la mecha</Button>
-      </div>
-    </div>
+          <a href="http://www.stackoverflow.com/">Continue with Facebook</a>
+        </MediaButton>
+      </MediaButtonGroup>
+
+      <label>
+        Keep session active:
+        <input type="checkbox" name="keepSessionActive" />
+      </label>
+    </Wrapper>
   );
 };
 
