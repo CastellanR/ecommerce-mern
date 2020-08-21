@@ -7,6 +7,15 @@ export const Wrapper = styled.div`
   label {
     margin: 1em 0em;
   }
+
+  .error {
+    color: #bf1650;
+  }
+
+  .error::before {
+    display: inline;
+    content: "⚠ ";
+  }
 `;
 
 export const Form = styled.form`
@@ -31,7 +40,7 @@ export const FormInput = styled.input`
   margin: 1em 0em;
   padding: 1em;
   border-width: 0em 0em 0.1em 0em;
-  border-color: rgba(0, 0, 0,0.5);
+  border-color: rgba(0, 0, 0, 0.5);
   border-style: solid;
   width: 20em;
   align-self: center;
@@ -53,7 +62,8 @@ export const MediaButton = styled.button`
   background-color: ${(props) => (props.facebook ? "blue" : "white")};
   border: 0.05em solid;
   padding: 0.5em;
-  border-color: ${(props) => (props.facebook ? "rgba(7, 67, 156,0.5)" : "rgba(0, 0, 0,0.5)")};
+  border-color: ${(props) =>
+    props.facebook ? "rgba(7, 67, 156,0.5)" : "rgba(0, 0, 0,0.5)"};
   width: 15.5em;
   margin: 0.5em 0em;
   font-size: 1em;

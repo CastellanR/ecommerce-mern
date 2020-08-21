@@ -18,6 +18,7 @@
 
 * ReactJs
 * Redux
+* Styled Components
 
 ## Docker dependencies
 
