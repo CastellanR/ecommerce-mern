@@ -33,6 +33,7 @@ export const Button = styled.button`
   padding: 0.5em;
   border: 2px solid lightcoral;
   border-radius: 0.25em;
+  cursor: pointer;
 `;
 
 export const FormInput = styled.input`

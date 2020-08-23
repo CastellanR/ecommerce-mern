@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useForm } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import {
   Wrapper,
@@ -13,6 +16,8 @@ import {
   MediaButton,
 } from "./style";
 
+import { loginUser, logout, selectUser } from "../user/userReducer";
+
 const Signin = () => {
   const { register, handleSubmit, errors } = useForm();
 
@@ -22,18 +27,42 @@ const Signin = () => {
     keepSessionActive: false,
   });
 
+  const [addRequestStatus, setAddRequestStatus] = useState("idle");
+
   let { email, password, keepSessionActive } = inputs;
+
+  let user = useSelector(selectUser);
+  console.log("Signin -> user", user);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  // reset login status
+  /*useEffect(() => {
+    dispatch(logout(user));
+  }, []);*/
 
   const handleChange = (e) => {
     const target = e.target;
-    const value = target.name === 'keepSessionActive' ? target.checked : target.value;
+    const value =
+      target.name === "keepSessionActive" ? target.checked : target.value;
     const name = target.name;
     setInputs((inputs) => ({ ...inputs, [name]: value }));
     console.log(inputs);
   };
 
-  const onSubmit = (e) => {
-    console.log(inputs);
+  const onSubmit = async () => {
+    setAddRequestStatus("pending");
+    try {
+      const resultAction = await dispatch(
+        loginUser(email, password, keepSessionActive)
+      );
+      unwrapResult(resultAction);
+      history.push("/");
+    } catch (error) {
+      console.error("Failed to save the post: ", error);
+    } finally {
+      setAddRequestStatus("idle");
+    }
   };
 
   return (
@@ -44,7 +73,7 @@ const Signin = () => {
       <h2>
         Sign in or <a href="#">Create your account</a>
       </h2>
-      <Form onSubmit={handleSubmit(onSubmit)} >
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           type="text"
           name="email"
@@ -107,6 +136,7 @@ const Signin = () => {
           checked={keepSessionActive}
         />
       </label>
+      <div>{(user && user.email) || "Usuario actual"}</div>
     </Wrapper>
   );
 };
