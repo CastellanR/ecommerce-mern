@@ -25,13 +25,13 @@ export const Form = styled.form`
 `;
 
 export const Button = styled.button`
-  background: lightcoral;
+  background: #F15944;
   color: white;
   font-size: 1em;
   margin: 1em;
   width: 6em;
   padding: 0.5em;
-  border: 2px solid lightcoral;
+  border: 2px solid #F15944;
   border-radius: 0.25em;
   cursor: pointer;
 `;
@@ -60,7 +60,7 @@ export const MediaButton = styled.button`
   display: flex;
   flex-direction: row;
   align-self: center;
-  background-color: ${(props) => (props.facebook ? "blue" : "white")};
+  background-color: ${(props) => (props.facebook ? "#0B6087" : "white")};
   border: 0.05em solid;
   padding: 0.5em;
   border-color: ${(props) =>
@@ -88,10 +88,10 @@ export const MediaButton = styled.button`
       props.facebook ? "white" : "rgba(229, 236, 240, 0.986)"};
     a {
       text-decoration: none !important;
-      color: ${(props) => (props.facebook ? "blue" : "black")};
+      color: ${(props) => (props.facebook ? "#0B6087" : "black")};
     }
     .icon {
-      color: ${(props) => (props.facebook ? "blue" : "")};
+      color: ${(props) => (props.facebook ? "#0B6087" : "")};
     }
   }
 `;
