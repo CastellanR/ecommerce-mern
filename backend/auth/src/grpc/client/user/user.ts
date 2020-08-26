@@ -73,7 +73,7 @@ export const getUserByEmail = async (
       request,
       (err: any, response: GetUserByEmailResponse) => {
         if (err) {
-          reject(newError(err.details));
+          reject(newError(err));
         } else {
           dtoUser.id = response.getId();
           dtoUser.email = response.getEmail();

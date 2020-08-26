@@ -12,26 +12,23 @@ const initPassport = (passport: any) => {
       async (email, password, done) => {
         try {
           const user = await getUserByEmail(email);
-          if (!user) {
-            return done(undefined, false, {
-              message: `User with email ${email} not found.`,
-            });
-          }
 
           const isMatch = await BCrypt.compare(password, user.password);
 
           if (isMatch) {
-            if (!user.isVerified)   //Check if the user validate its account
-              return done(undefined, false, {
-                message: "Confirm your account to log in into the application",
-              });
-            return done(undefined, user);
+            if (!user.isVerified)
+              //Check if the user validate its account
+              return done(
+                "Confirm your account to log in into the application"
+              );
+            return done(null, user);
           }
-          return done(undefined, false, {
-            message: "Incorrect password.",
-          });
+          return done("Incorrect password.");
         } catch (err) {
-          return done(err.message);
+          if (err.code === 400)
+            return done(`User with email ${email} not found.`);
+
+          return done(null, false, { message: err.message });
         }
       }
     )

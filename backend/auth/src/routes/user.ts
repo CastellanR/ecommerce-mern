@@ -33,13 +33,12 @@ export default (app: Router) => {
         await passport.authenticate(
           "local",
           { session: false },
-          async (err, passportUser, info) => {
+          async (info, passportUser, err) => {
             if (err) {
               Logger.error(err);
               return res.status(500).json({ code: 500, message: err });
             }
             if (!passportUser) {
-              Logger.error(info);
               return res.status(400).json({ code: 400, message: info });
             }
             req.passportUser = passportUser;
