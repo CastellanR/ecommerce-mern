@@ -36,7 +36,7 @@ export default (app: Router) => {
           async (info, passportUser, err) => {
             if (err) {
               Logger.error(err);
-              return res.status(500).json({ code: 500, message: err });
+              return res.status(500).json({ code: 500, message: err.message });
             }
             if (!passportUser) {
               return res.status(400).json({ code: 400, message: info });
