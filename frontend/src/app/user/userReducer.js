@@ -11,7 +11,13 @@ const initialState = {
 
 export const loginUser = createAsyncThunk(
   "/user/login",
-  async (user) => (await login(user)).body
+  async (userCredentials, { rejectWithValue }) => {
+    try {
+      return await login(userCredentials);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
 );
 
 export const userSlice = createSlice({
@@ -23,18 +29,22 @@ export const userSlice = createSlice({
       state.status = "loading";
     },
     [loginUser.fulfilled]: (state, action) => {
-      localStorage.setItem("token", action.payload.token);
-      state.token = action.payload.token;
+      console.log("action", action.payload);
+      localStorage.setItem("token", action.payload.message.token);
+      state.token = action.payload.message.token;
       state.currentUser = {
-        email: action.payload.email,
-        idUser: action.payload.idUser,
+        email: action.payload.message.email,
+        idUser: action.payload.message.idUser,
       };
       state.status = "succeeded";
+      state.error = null;
+      state.isAuthenticated = true;
     },
     [loginUser.rejected]: (state, action) => {
       localStorage.removeItem("token");
       state.status = "failed";
       state.error = action.payload;
+      state.isAuthenticated = false;
     },
   },
 });

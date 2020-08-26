@@ -6,6 +6,11 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
 
 import {
   Wrapper,
@@ -16,14 +21,14 @@ import {
   MediaButton,
 } from "./style";
 
-import { loginUser, logout, selectUser } from "../user/userReducer";
+import { loginUser, selectUser } from "../user/userReducer";
 
 const Signin = () => {
   const { register, handleSubmit, errors } = useForm();
 
   const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
+    email: "pabloperez@gmail.com",
+    password: "Contrasena",
     keepSessionActive: false,
   });
 
@@ -32,14 +37,8 @@ const Signin = () => {
   let { email, password, keepSessionActive } = inputs;
 
   let user = useSelector(selectUser);
-  console.log("Signin -> user", user);
   const dispatch = useDispatch();
   const history = useHistory();
-
-  // reset login status
-  /*useEffect(() => {
-    dispatch(logout(user));
-  }, []);*/
 
   const handleChange = (e) => {
     const target = e.target;
@@ -47,21 +46,35 @@ const Signin = () => {
       target.name === "keepSessionActive" ? target.checked : target.value;
     const name = target.name;
     setInputs((inputs) => ({ ...inputs, [name]: value }));
-    console.log(inputs);
   };
 
   const onSubmit = async () => {
-    setAddRequestStatus("pending");
-    try {
-      const resultAction = await dispatch(
-        loginUser(email, password, keepSessionActive)
-      );
-      unwrapResult(resultAction);
-      history.push("/");
-    } catch (error) {
-      console.error("Failed to save the post: ", error);
-    } finally {
-      setAddRequestStatus("idle");
+    if (addRequestStatus === "idle") {
+      setAddRequestStatus("pending");
+      let resultAction;
+      try {
+        resultAction = await dispatch(
+          loginUser({ email, password, keepSessionActive })
+        );
+        unwrapResult(resultAction);
+        history.push("/");
+      } catch (error) {
+        console.log("onSubmit -> error", error);
+        if (resultAction.payload.code === 500)
+          NotificationManager.error(
+            "Auth microservice down",
+            "Network Error",
+            4000
+          );
+        else {
+          console.log(resultAction.payload);
+          NotificationManager.error(
+            resultAction.payload.message,
+            "Wrong credentials",
+            4000
+          );
+        }
+      }
     }
   };
 
@@ -77,11 +90,11 @@ const Signin = () => {
         <FormInput
           type="text"
           name="email"
-          value={email}
+          defaultValue={email}
           placeholder="Enter your email"
           ref={register({
             required: true,
-            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            pattern: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g,
           })}
         />
         {errors.email && errors.email.type === "required" && (
@@ -93,7 +106,7 @@ const Signin = () => {
         <FormInput
           type="text"
           name="password"
-          value={password}
+          defaultValue={password}
           placeholder="Enter your password"
           ref={register({ required: true, minLength: 8 })}
         />
@@ -110,7 +123,7 @@ const Signin = () => {
           </Button>
         </div>
       </Form>
-      <p class="separator">
+      <p className="separator">
         <span>Or</span>
       </p>
       <MediaButtonGroup>
@@ -133,10 +146,11 @@ const Signin = () => {
         <input
           type="checkbox"
           name="keepSessionActive"
-          checked={keepSessionActive}
+          defaultChecked={keepSessionActive}
         />
       </label>
       <div>{(user && user.email) || "Usuario actual"}</div>
+      <NotificationContainer />
     </Wrapper>
   );
 };

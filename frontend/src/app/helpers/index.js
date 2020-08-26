@@ -1,1 +1,1 @@
-
+export { customError } from "./error";
