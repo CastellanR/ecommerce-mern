@@ -10,15 +10,16 @@ const deviceName = navigator.userAgent.substring(
 
 export const login = async ({ email, password, keepSessionActive }) => {
   try {
-    return (await axios.post(config.authUrl + "/login", {
-      email,
-      password,
-      keepSessionActive,
-      agent,
-      deviceName,
-    })).data;
+    return (
+      await axios.post(config.authUrl + "/login", {
+        email,
+        password,
+        keepSessionActive,
+        agent,
+        deviceName,
+      })
+    ).data;
   } catch (error) {
-    console.log("login -> error", error.response);
     throw customError(error);
   }
 };

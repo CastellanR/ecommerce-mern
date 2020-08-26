@@ -59,7 +59,6 @@ const Signin = () => {
         unwrapResult(resultAction);
         history.push("/");
       } catch (error) {
-        console.log("onSubmit -> error", error);
         if (resultAction.payload.code === 500)
           NotificationManager.error(
             "Auth microservice down",
@@ -67,13 +66,13 @@ const Signin = () => {
             4000
           );
         else {
-          console.log(resultAction.payload);
           NotificationManager.error(
             resultAction.payload.message,
             "Wrong credentials",
             4000
           );
         }
+        setAddRequestStatus("idle");
       }
     }
   };

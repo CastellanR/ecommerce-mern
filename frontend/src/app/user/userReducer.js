@@ -29,7 +29,6 @@ export const userSlice = createSlice({
       state.status = "loading";
     },
     [loginUser.fulfilled]: (state, action) => {
-      console.log("action", action.payload);
       localStorage.setItem("token", action.payload.message.token);
       state.token = action.payload.message.token;
       state.currentUser = {
