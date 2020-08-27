@@ -23,3 +23,18 @@ export const login = async ({ email, password, keepSessionActive }) => {
     throw customError(error);
   }
 };
+
+export const register = async ({ email, password, firstName, lastName }) => {
+  try {
+    return (
+      await axios.post(config.authUrl + "/register", {
+        email,
+        password,
+        firstName,
+        lastName
+      })
+    ).data;
+  } catch (error) {
+    throw customError(error);
+  }
+};

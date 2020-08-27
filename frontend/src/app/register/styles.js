@@ -16,6 +16,10 @@ export const Wrapper = styled.div`
     display: inline;
     content: "⚠ ";
   }
+
+  .home {
+    margin: 1rem 0rem;
+  }
 `;
 
 export const Form = styled.form`

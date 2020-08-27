@@ -19,31 +19,30 @@ import {
   FormInput,
   MediaButtonGroup,
   MediaButton,
-} from "../register/styles";
+} from "./styles";
 
-import { loginUser, selectUser } from "../user/userReducer";
+import { registerUser } from "../user/userReducer";
 
-const Signin = () => {
+const Register = () => {
   const { register, handleSubmit, errors } = useForm();
 
   const [inputs, setInputs] = useState({
     email: "pabloperez@gmail.com",
     password: "Contrasena",
-    keepSessionActive: false,
+    firstName: "",
+    lastName: "",
   });
 
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
 
-  let { email, password, keepSessionActive } = inputs;
+  let { email, password, firstName, lastName } = inputs;
 
-  let user = useSelector(selectUser);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleChange = (e) => {
     const target = e.target;
-    const value =
-      target.name === "keepSessionActive" ? target.checked : target.value;
+    const value = target.value;
     const name = target.name;
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
@@ -54,11 +53,12 @@ const Signin = () => {
       let resultAction;
       try {
         resultAction = await dispatch(
-          loginUser({ email, password, keepSessionActive })
+          registerUser({ email, password, firstName, lastName })
         );
         unwrapResult(resultAction);
         history.push("/");
       } catch (error) {
+        console.log("onSubmit -> resultAction.payload", resultAction.payload)
         switch (resultAction.payload.code) {
           case 500:
             NotificationManager.error(
@@ -76,18 +76,10 @@ const Signin = () => {
             );
             break;
 
-          case 401:
-            NotificationManager.info(
-              resultAction.payload.message,
-              "Check your email",
-              4000
-            );
-            break;
-
           default:
             NotificationManager.error(
               resultAction.payload.message,
-              "Wrong credentials",
+              "Email existent",
               4000
             );
         }
@@ -102,9 +94,35 @@ const Signin = () => {
         <a href="/">Back to Home</a>
       </div>
       <h2>
-        Sign in or <a href="/register">Create your account</a>
+        Create your account or <a href="/signin">Sign in</a>
       </h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormInput
+          type="text"
+          name="firstName"
+          defaultValue={firstName}
+          placeholder="Enter your first name"
+          ref={register({ required: true, minLength: 2 })}
+        />
+        {errors.firstName && errors.firstName.type === "required" && (
+          <span className="error">This field is required</span>
+        )}
+        {errors.firstName && errors.firstName.type === "minLength" && (
+          <span className="error">Minimum 2 characters length</span>
+        )}
+        <FormInput
+          type="text"
+          name="lastName"
+          defaultValue={lastName}
+          placeholder="Enter your last name"
+          ref={register({ required: true, minLength: 2 })}
+        />
+        {errors.lastName && errors.lastName.type === "required" && (
+          <span className="error">This field is required</span>
+        )}
+        {errors.lastName && errors.lastName.type === "minLength" && (
+          <span className="error">Minimum 2 characters length</span>
+        )}
         <FormInput
           type="text"
           name="email"
@@ -149,28 +167,18 @@ const Signin = () => {
           <IconContext.Provider value={{ className: "icon" }}>
             <FcGoogle />
           </IconContext.Provider>
-          <a href="http://www.stackoverflow.com/">Continue with Google</a>
+          <a href="http://www.stackoverflow.com/">Register with Google</a>
         </MediaButton>
         <MediaButton facebook>
           <IconContext.Provider value={{ className: "icon" }}>
             <FaFacebook />
           </IconContext.Provider>
-          <a href="http://www.stackoverflow.com/">Continue with Facebook</a>
+          <a href="http://www.stackoverflow.com/">Register with Facebook</a>
         </MediaButton>
       </MediaButtonGroup>
-
-      <label>
-        Keep session active:
-        <input
-          type="checkbox"
-          name="keepSessionActive"
-          defaultChecked={keepSessionActive}
-        />
-      </label>
-      <div>{(user && user.email) || "Usuario actual"}</div>
       <NotificationContainer />
     </Wrapper>
   );
 };
 
-export default Signin;
+export default Register;

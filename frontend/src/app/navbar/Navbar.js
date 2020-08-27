@@ -25,7 +25,7 @@ const Navbar = () => {
         </Link>
       </Search>
       <LinkGroup>
-        <Link to="/signin" className="link">
+        <Link to="/register" className="link">
           Register
         </Link>
         <Link to="/signin" className="link">

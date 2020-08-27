@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login } from "./userService";
+import { login, register } from "./userService";
 
 const initialState = {
   currentUser: null,
@@ -14,6 +14,17 @@ export const loginUser = createAsyncThunk(
   async (userCredentials, { rejectWithValue }) => {
     try {
       return await login(userCredentials);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  "/user/register",
+  async (userInfo, { rejectWithValue }) => {
+    try {
+      return await register(userInfo);
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -44,6 +55,17 @@ export const userSlice = createSlice({
       state.status = "failed";
       state.error = action.payload;
       state.isAuthenticated = false;
+    },
+    [registerUser.pending]: (state) => {
+      state.status = "loading";
+    },
+    [registerUser.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.error = null;
+    },
+    [registerUser.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
     },
   },
 });
