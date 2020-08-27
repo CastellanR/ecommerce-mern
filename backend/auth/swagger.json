@@ -148,7 +148,27 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Email inexistent, password doesn't match, user not activated"
+                      "example": "Email inexistent or password doesn't match"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User not activated"
                     }
                   }
                 }

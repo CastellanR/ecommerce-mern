@@ -30,7 +30,9 @@ export default class UserService {
     try {
       idUser = await createUser(dtoCreateUser);
     } catch (error) {
-      return { code: error.code, message: error.message };
+      return error.code === 14
+        ? { code: 503, message: "User microservice down" }
+        : { code: error.code, message: error.message };
     }
     //TODO Add rabbitmq logic
 
@@ -60,7 +62,7 @@ export default class UserService {
         return { code: 500, message: "There is no active session" };
       }
 
-      const response :IDTOLoginResponse = await new Promise((resolve, reject) =>
+      const response: IDTOLoginResponse = await new Promise((resolve, reject) =>
         jwt.sign(
           { idUser: dtoLoginUser.id },
           "secret",

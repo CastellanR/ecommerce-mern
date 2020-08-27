@@ -39,7 +39,15 @@ export default (app: Router) => {
               return res.status(500).json({ code: 500, message: err.message });
             }
             if (!passportUser) {
-              return res.status(400).json({ code: 400, message: info });
+              const code = info.includes("down")
+                ? 503
+                : info.includes("Confirm")
+                ? 401
+                : 400;
+              return res.status(code).json({
+                code: code,
+                message: info,
+              });
             }
             req.passportUser = passportUser;
             next();

@@ -27,6 +27,7 @@ const initPassport = (passport: any) => {
         } catch (err) {
           if (err.code === 400)
             return done(`User with email ${email} not found.`);
+          else if (err.code === 14) return done(`User microservice down`);
 
           return done(null, false, { message: err.message });
         }
