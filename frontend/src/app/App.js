@@ -1,18 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Home from "./home/Home";
-import Navbar from "./navbar/Navbar";
+import Home from "./features/home/Home";
+import Navbar from "./features/navbar/Navbar";
 
-import Signin from "./signin/Signin";
-import Register from "./register/Register"
+import Signin from "./features/signin/Signin";
+import Register from "./features/register/Register";
 
-import "./App.scss";
+import { AppContainer } from "./appStyle";
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <AppContainer>
         <Switch>
           <Route path="/signin">
             <Signin />
@@ -25,7 +25,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
-      </div>
+      </AppContainer>
       <Switch></Switch>
     </Router>
   );

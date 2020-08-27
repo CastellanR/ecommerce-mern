@@ -10,7 +10,6 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import "react-notifications/lib/notifications.css";
 
 import {
   Wrapper,

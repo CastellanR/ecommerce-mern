@@ -1,6 +1,6 @@
 import axios from "axios";
-import config from "../config/config";
-import { customError } from "../helpers/index";
+import config from "../../config/config";
+import { customError } from "../../helpers/index";
 
 const agent = navigator.platform;
 const deviceName = navigator.userAgent.substring(
