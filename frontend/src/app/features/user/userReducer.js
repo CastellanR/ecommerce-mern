@@ -1,24 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login, register } from "./userService";
+import { register, login, logout } from "./userService";
 
 const initialState = {
   currentUser: null,
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem("token") ? true : false,
   status: "idle",
   token: localStorage.getItem("token"),
   error: null,
 };
-
-export const loginUser = createAsyncThunk(
-  "/user/login",
-  async (userCredentials, { rejectWithValue }) => {
-    try {
-      return await login(userCredentials);
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
 
 export const registerUser = createAsyncThunk(
   "/user/register",
@@ -31,11 +20,44 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const loginUser = createAsyncThunk(
+  "/user/login",
+  async (userCredentials, { rejectWithValue }) => {
+    try {
+      return await login(userCredentials);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  "/user/logout",
+  async (token, { rejectWithValue }) => {
+    try {
+      return await logout(token);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {},
   extraReducers: {
+    [registerUser.pending]: (state) => {
+      state.status = "loading";
+    },
+    [registerUser.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.error = null;
+    },
+    [registerUser.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    },
     [loginUser.pending]: (state) => {
       state.status = "loading";
     },
@@ -56,14 +78,18 @@ export const userSlice = createSlice({
       state.error = action.payload;
       state.isAuthenticated = false;
     },
-    [registerUser.pending]: (state) => {
+    [logoutUser.pending]: (state) => {
       state.status = "loading";
     },
-    [registerUser.fulfilled]: (state, action) => {
+    [logoutUser.fulfilled]: (state, action) => {
+      localStorage.removeItem("token");
+      state.token = null;
+      state.currentUser = null;
       state.status = "succeeded";
       state.error = null;
+      state.isAuthenticated = false;
     },
-    [registerUser.rejected]: (state, action) => {
+    [logoutUser.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.payload;
     },
@@ -71,7 +97,7 @@ export const userSlice = createSlice({
 });
 
 export const selectUser = (state) => state.user.currentUser;
-
-export const { logout } = userSlice.actions;
+export const selectUserStatus = (state) => state.user.isAuthenticated;
+export const selectToken = (state) => state.user.token;
 
 export default userSlice.reducer;

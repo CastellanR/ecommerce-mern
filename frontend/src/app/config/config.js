@@ -1,7 +1,10 @@
+const dotenv = require('dotenv');
+
 const env = process.env["NODE_ENV"];
 
 const exportConfig = {
-  authUrl: `http://192.168.0.29:5000/api/auth`,
+  authUrl: process.env.REACT_APP_AUTH_SERVICE,
   env: env,
 };
+console.log("exportConfig", exportConfig)
 export default exportConfig;

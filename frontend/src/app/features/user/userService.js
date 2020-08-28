@@ -8,6 +8,21 @@ const deviceName = navigator.userAgent.substring(
   navigator.userAgent.indexOf(")")
 );
 
+export const register = async ({ email, password, firstName, lastName }) => {
+  try {
+    return (
+      await axios.post(config.authUrl + "/register", {
+        email,
+        password,
+        firstName,
+        lastName,
+      })
+    ).data;
+  } catch (error) {
+    throw customError(error);
+  }
+};
+
 export const login = async ({ email, password, keepSessionActive }) => {
   try {
     return (
@@ -24,15 +39,15 @@ export const login = async ({ email, password, keepSessionActive }) => {
   }
 };
 
-export const register = async ({ email, password, firstName, lastName }) => {
+export const logout = async (token) => {
+  console.log("logout -> token", token);
   try {
     return (
-      await axios.post(config.authUrl + "/register", {
-        email,
-        password,
-        firstName,
-        lastName
-      })
+      await axios.post(
+        config.authUrl + "/logout",
+        {},
+        { headers: { Authorization: token } }
+      )
     ).data;
   } catch (error) {
     throw customError(error);
