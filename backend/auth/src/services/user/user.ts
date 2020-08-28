@@ -7,7 +7,7 @@ import {
 import { createUser } from "../../grpc/client/user/user";
 import Logger from "../../loaders/logger";
 import BCrypt from "../../config/bcrypt";
-import { encrypt } from "../../helpers/crypto";
+import { encrypt, decrypt } from "../../helpers/crypto";
 
 import Session from "../../models/Session";
 import SessionState from "../../models/SessionState";
@@ -121,5 +121,41 @@ export default class UserService {
       Logger.error(error);
       return { code: 500, message: error };
     }
+  }
+
+  async LogoutUser(token: string): Promise<{ code: number; message: string }> {
+    if (!token) return { code: 200, message: "User logged out!" };
+
+    const sessionState = await SessionState.findOne({
+      name: "Closed",
+      deletedAt: null,
+    });
+
+    if (!sessionState) {
+      return { code: 500, message: "There is no active session" };
+    }
+    try {
+      await Session.findOneAndUpdate(
+        {
+          token: token.replace("Bearer ",""),
+        },
+        {
+          idSessionState: sessionState._id,
+          token: null,
+          updatedAt: new Date(),
+        },
+        {
+          //@ts-ignore
+          useFindAndModify: false,
+        }
+      );
+    } catch (error) {
+      return { code: 500, message: error.message };
+    }
+
+    return {
+      code: 200,
+      message: "User logged out!",
+    };
   }
 }

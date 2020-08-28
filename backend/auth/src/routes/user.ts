@@ -70,4 +70,17 @@ export default (app: Router) => {
       }
     }
   );
+
+  route.post(
+    "/logout",
+    async (req: Request, res: Response, next: NextFunction) => {
+      const userToken = req.headers.authorization;
+
+      const userServiceInstance = Container.get(UserService); // Service locator
+
+      const response = await userServiceInstance.LogoutUser(userToken);
+
+      return res.status(response.code).json(response);
+    }
+  );
 };
