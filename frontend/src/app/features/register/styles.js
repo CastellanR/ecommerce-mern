@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-
+  background-color: white;
+  padding: 2rem;
   label {
     margin: 1em 0em;
   }
@@ -18,26 +19,32 @@ export const Wrapper = styled.div`
   }
 
   .home {
-    margin: 1rem 0rem;
+    margin: 0.2rem 0rem;
   }
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  font-size: 1rem;
 `;
 
 export const Button = styled.button`
-  background: #F15944;
+  background: #f15944;
   color: white;
-  font-size: 1em;
-  margin: 1em;
-  width: 6em;
+  margin: 2em 0em 0.5em 0em;
+  width: 30%;
   padding: 0.5em;
-  border: 2px solid #F15944;
+  font-size: 0.8em;
+  border: 2px solid #f15944;
   border-radius: 0.25em;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 50%;
+    font-size: 1em;
+  }
+  @media (max-width: 1024px) {
+  }
 `;
 
 export const FormInput = styled.input`
@@ -47,7 +54,7 @@ export const FormInput = styled.input`
   border-width: 0em 0em 0.1em 0em;
   border-color: rgba(0, 0, 0, 0.5);
   border-style: solid;
-  width: 20em;
+  width: 75%;
   align-self: center;
 
   &:focus {
@@ -58,6 +65,7 @@ export const FormInput = styled.input`
 export const MediaButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
 `;
 
 export const MediaButton = styled.button`
@@ -67,13 +75,21 @@ export const MediaButton = styled.button`
   background-color: ${(props) => (props.facebook ? "#0B6087" : "white")};
   border: 0.05em solid;
   padding: 0.5em;
+  margin-top: 1em;
   border-color: ${(props) =>
     props.facebook ? "rgba(7, 67, 156,0.5)" : "rgba(0, 0, 0,0.5)"};
-  width: 15.5em;
-  margin: 0.5em 0em;
-  font-size: 1em;
+  width: 60%;
   cursor: pointer;
   font-weight: bolder;
+  font-size: 0.8em;
+
+  @media (max-width: 768px) {
+    width: 70%;
+    font-size: 1em;
+  }
+  @media (max-width: 1024px) {
+  }
+
   .icon {
     color: ${(props) => (props.facebook ? "white" : "")};
     font-size: 1.3em;
@@ -83,7 +99,6 @@ export const MediaButton = styled.button`
   a {
     text-decoration: none !important;
     color: ${(props) => (props.facebook ? "white" : "black")};
-
     align-self: center;
   }
 

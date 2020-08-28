@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
+import { Wrapper } from "./styles";
 
 const Home = () => {
   return (
-    <div>
+    <Wrapper>
       <h1>ONLINE STORE</h1>
       MANSA HOMEEEEEEEEE
-    </div>
+    </Wrapper>
   );
 };
 

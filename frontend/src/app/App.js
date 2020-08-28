@@ -7,7 +7,7 @@ import Navbar from "./features/navbar/Navbar";
 import Signin from "./features/signin/Signin";
 import Register from "./features/register/Register";
 
-import { AppContainer } from "./appStyle";
+import { AppContainer, AuthSection } from "./appStyle";
 
 function App() {
   return (
@@ -15,10 +15,14 @@ function App() {
       <AppContainer>
         <Switch>
           <Route path="/signin">
-            <Signin />
+            <AuthSection>
+              <Signin />
+            </AuthSection>
           </Route>
           <Route path="/register">
-            <Register />
+            <AuthSection>
+              <Register />
+            </AuthSection>
           </Route>
           <Route path="/">
             <Navbar />

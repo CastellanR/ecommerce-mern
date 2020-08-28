@@ -58,7 +58,6 @@ const Register = () => {
         unwrapResult(resultAction);
         history.push("/");
       } catch (error) {
-        console.log("onSubmit -> resultAction.payload", resultAction.payload)
         switch (resultAction.payload.code) {
           case 500:
             NotificationManager.error(

@@ -166,7 +166,6 @@ const Signin = () => {
           defaultChecked={keepSessionActive}
         />
       </label>
-      <div>{(user && user.email) || "Usuario actual"}</div>
       <NotificationContainer />
     </Wrapper>
   );
