@@ -2,6 +2,9 @@ import "reflect-metadata";
 
 import express from "express";
 
+//Load env file
+require('dotenv').config()
+
 import config from "./config/env";
 import Logger from "./loaders/logger";
 

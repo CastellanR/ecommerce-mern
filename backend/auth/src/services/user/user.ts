@@ -5,6 +5,7 @@ import {
   IDTOLoginResponse,
 } from "../../interfaces/IUser";
 import { createUser } from "../../grpc/client/user/user";
+import config from "../../config/env"
 import Logger from "../../loaders/logger";
 import BCrypt from "../../config/bcrypt";
 import { encrypt, decrypt } from "../../helpers/crypto";
@@ -65,9 +66,9 @@ export default class UserService {
       const response: IDTOLoginResponse = await new Promise((resolve, reject) =>
         jwt.sign(
           { idUser: dtoLoginUser.id },
-          "secret",
+          config.secretJWT,
           {
-            expiresIn: dtoLoginUser.keepSessionActive === true ? "180d" : "1d",
+            expiresIn: dtoLoginUser.keepSessionActive === true ? "180d" : "5m",
           },
           async (err, token) => {
             if (err) {
@@ -137,7 +138,7 @@ export default class UserService {
     try {
       await Session.findOneAndUpdate(
         {
-          token: token.replace("Bearer ",""),
+          token: token.replace("Bearer ", ""),
         },
         {
           idSessionState: sessionState._id,

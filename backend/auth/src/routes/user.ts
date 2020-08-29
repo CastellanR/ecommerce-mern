@@ -3,6 +3,7 @@ import { Container } from "typedi";
 import passport from "passport";
 
 import validation from "./validation/validation";
+import auth from "../config/auth";
 import UserService from "../services/user/user";
 import { registerSchema, loginSchema } from "./validation/schema";
 import Logger from "../loaders/logger";
@@ -11,6 +12,27 @@ const route = Router();
 
 export default (app: Router) => {
   app.use("/auth", route);
+
+  //Catch user not authenticated or token invalid error
+  app.use(function (
+    err: Error,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    if (err) {
+      res
+        .status(401)
+        .send({
+          code: 401,
+          message:
+            err.message === "No authorization token was found"
+              ? "Token missing"
+              : "Token expired",
+        });
+    }
+  });
+
   route.post(
     "/register",
     validation(registerSchema, "body"),
@@ -73,6 +95,7 @@ export default (app: Router) => {
 
   route.post(
     "/logout",
+    auth.required,
     async (req: Request, res: Response, next: NextFunction) => {
       const userToken = req.headers.authorization;
 

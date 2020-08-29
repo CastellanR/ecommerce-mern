@@ -7,6 +7,7 @@ const local = {
   grpcUser: "localhost:6001",
   cryptoKey: process.env.CRYPTO_KEY,
   apiPrefix: "/api",
+  secretJWT: process.env.SECRET_JWT,
   env: env
 };
 
@@ -18,6 +19,7 @@ const test = {
   grpcUser: "localhost:6001",
   cryptoKey: process.env.CRYPTO_KEY,
   apiPrefix: "/api",
+  secretJWT: process.env.SECRET_JWT,
   env: env
 };
 

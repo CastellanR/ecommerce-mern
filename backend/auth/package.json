@@ -8,9 +8,9 @@
     "url": "https://github.com/CastellanR/ecommerce-mern"
   },
   "scripts": {
-    "start": "cross-env CRYPTO_KEY=.1qaz2wsx3edc4rfv NODE_ENV=local npm run serve",
+    "start": "npm run serve",
     "serve": "tsc && nodemon",
-    "test": "cross-env CRYPTO_KEY=.1qaz2wsx3edc4rfv NODE_ENV=test jest",
+    "test": "jest",
     "watch-test": "npm run test -- --watchAll",
     "build-ts": "tsc",
     "watch-ts": "tsc -w"
@@ -19,13 +19,16 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@types/express-jwt": "0.0.42",
     "bcrypt": "^5.0.0",
     "bunyan": "^1.8.12",
     "bunyan-express-serializer": "^1.0.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "crypto-js": "^4.0.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
     "express-session": "^1.17.1",
     "google-protobuf": "^3.12.1",
     "grpc": "^1.24.3",
