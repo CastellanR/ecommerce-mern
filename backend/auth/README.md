@@ -11,6 +11,19 @@ Provides all the users information to the frontend and others microservices.
 * Jest
 * gRPC
 
+## Setup
+
+Create the following files:
+
+* .env in src folder
+* test.env in test folder
+
+Both files must have this structure
+
+* NODE_ENV
+* CRYPTO_KEY
+* SECRET_JWT
+
 ## Run scripts
 
 * Server: npm start
